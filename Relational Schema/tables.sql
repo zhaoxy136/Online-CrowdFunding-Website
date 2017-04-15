@@ -5,7 +5,7 @@ create table `Account` (
  `Username` varchar(45) not null,
  `Password` varchar(45) not null,
  PRIMARY KEY (`AccountID`));
-
+ 
 create table `User` (
   `AccountID` varchar(45) not null,
   `FirstName` varchar (45) null,
@@ -37,7 +37,9 @@ create table `Request` (
  `PostTime` datetime not null,
  `FundingEndtime` datetime not null,
  `TargetTime` datetime not null,
- `Status` varchar(45) DEFAULT'Funding',
+ `CurrentFund` decimal(10,2) not null,
+ `CurSponCount` int DEFAULT 0,
+ `Status` varchar(45) DEFAULT 'Funding',
  `LikeCount` int DEFAULT 0,
  PRIMARY KEY (`ReqID`),
  FOREIGN KEY (`OwnerID`) REFERENCES `User`(`AccountID`));
@@ -70,7 +72,7 @@ create TABLE `SponsorShip` (
   `PledgeTime` datetime not null,
   `Amount` decimal(10,2) not null,
   `CreditCardNumber` varchar(45) not null,
-  `Status` varchar(45) not null,
+  `IsCharged` varchar(45) DEFAULT 'UnCharged',
   `ChargedTime` datetime null,
   PRIMARY KEY (`ReqID`, `AccountID`, `PledgeTime`),
   FOREIGN KEY (`ReqID`) REFERENCES `Request` (`ReqID`),
