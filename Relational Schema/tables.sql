@@ -138,5 +138,14 @@ create TABLE `SponsorShip` (
   FOREIGN KEY (`AccountID`) REFERENCES `User` (`AccountID`),
   FOREIGN KEY (`ReqID`) REFERENCES `Request` (`ReqID`));
 
+create table `Charge` (
+  `AccountID` varchar(45) not null,
+  `ReqID` int not null,
+  `CreditCardNumber` varchar(45) null,
+  `Amount` decimal(10,2) not null,
+  `PledgeTime` datetime not null,
+  `ChargedTime` datetime not null,
 
+  PRIMARY KEY (`AccountID`, `ReqID`, `PledgeTime`, `ChargedTime`),
+  FOREIGN KEY (`AccountID`, `ReqID`, `PledgeTime`) REFERENCES `SponsorShip` (`AccountID`, `ReqID`, `PledgeTime`));
 
