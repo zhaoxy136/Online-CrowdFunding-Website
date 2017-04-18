@@ -1,13 +1,16 @@
+drop database if exists CrowdFund;
 create database CrowdFund;
 use CrowdFund;
-create table `Account` (
- `AccountID` varchar(45) not null,
- `Username` varchar(45) not null,
+
+drop table if exists `Accounts`;
+create table `Accounts` (
+ `UID` varchar(45) not null,
  `Password` varchar(45) not null,
- PRIMARY KEY (`AccountID`));
- 
-create table `User` (
-  `AccountID` varchar(45) not null,
+ PRIMARY KEY (`UID`));
+
+drop table if exists `UserProfiles`;
+create table `UserProfiles` (
+  `UID` varchar(45) not null,
   `FirstName` varchar (45) null,
   `LastName` varchar(45) null,
   `Gender` varchar(25) null,
@@ -16,127 +19,129 @@ create table `User` (
   `Cellphone` varchar(45) null,
   `EmailAddress` varchar(45) null,
   `CreditCardNumber` varchar(45) null,
-  `Interests` varchar (45) NULL,
-  PRIMARY KEY (`AccountID`),
-  FOREIGN KEY (`AccountID`) REFERENCES `Account`(`AccountID`));
-  
-   create table `Following` (
-  `AccountID` varchar(45) not null,
+  `Interests` varchar (140) NULL,
+  PRIMARY KEY (`UID`),
+  FOREIGN KEY (`UID`) REFERENCES `Accounts`(`UID`));
+
+drop table if exists `Following`;
+create table `Following` (
+  `UID` varchar(45) not null,
   `FollowerID` varchar(45) not null,
-  PRIMARY KEY (`AccountID`, `FollowerID`),
-  FOREIGN KEY (`AccountID`) REFERENCES `User`(`AccountID`),
-  FOREIGN KEY (`FollowerID`) REFERENCES `User`(`AccountID`));
+  PRIMARY KEY (`UID`, `FollowerID`),
+  FOREIGN KEY (`UID`) REFERENCES `UserProfiles`(`UID`),
+  FOREIGN KEY (`FollowerID`) REFERENCES `UserProfiles`(`UID`));
   
-create table `Request` (
- `ReqID` int not null,
- `ReqName` varchar(45) not null,
+drop table if exists `Projects`;
+create table `Projects` (
+ `ProjID` int not null,
+ `ProjName` varchar(45) not null,
  `Description` varchar(1500) not null,
  `OwnerID` varchar(45) not null,
  `MinFundValue` int not null,
  `MaxFundValue` int not null,
  `PostTime` datetime not null,
  `FundingEndtime` datetime not null,
+ `StartTime` datetime null,
  `TargetTime` datetime not null,
- `CurrentFund` decimal(10,2) not null,
- `CurSponCount` int DEFAULT 0,
- `Status` varchar(45) DEFAULT 'Funding',
+ `CompleteTime` datetime null,
  `LikeCount` int DEFAULT 0,
- PRIMARY KEY (`ReqID`),
- FOREIGN KEY (`OwnerID`) REFERENCES `User`(`AccountID`));
+ `SponsorCount` int DEFAULT 0,
+ `AlreadyFund` decimal(10,2) DEFAULT 0.00,
+ `Status` varchar(45) DEFAULT'Funding',
+ `AvgRating` decimal(2,1) null,
+ PRIMARY KEY (`ProjID`),
+ FOREIGN KEY (`OwnerID`) REFERENCES `UserProfiles`(`UID`));
  
+drop table if exists `Tags`;
 create table `Tags` (
  `Tag` varchar(45) not null,
  PRIMARY KEY (`Tag`));
- 
+
+drop table if exists `Label`; 
 create table `Label` (
- `ReqID` int not null,
+ `ProjID` int not null,
  `Tag` varchar(45) not null,
- PRIMARY KEY (`ReqID`, `Tag`),
- FOREIGN KEY (`ReqID`) REFERENCES `Request`(`ReqID`),
+ PRIMARY KEY (`ProjID`, `Tag`),
+ FOREIGN KEY (`ProjID`) REFERENCES `Projects`(`ProjID`),
  FOREIGN KEY (`Tag`) REFERENCES `Tags`(`Tag`));
  
-create TABLE `Project` (
+drop table if exists `Pledges`;
+create TABLE `Pledges` (
   `ProjID` int not null,
-  `StartTime` datetime not null,
-  `TargetTime` datetime not null,
-  `CompleteTime` datetime null,
-  `ActualFund` decimal(10,2) not null,
-  `SponsorCount` int not null,
-  `Rating` decimal(2,1) null,
-  PRIMARY KEY (`ProjID`),
-  FOREIGN KEY (`ProjID`) REFERENCES `Request` (`ReqID`));
-
-create TABLE `SponsorShip` (
-  `ReqID` int not null,
-  `AccountID` varchar(45) not null,
+  `UID` varchar(45) not null,
   `PledgeTime` datetime not null,
   `Amount` decimal(10,2) not null,
   `CreditCardNumber` varchar(45) not null,
-  `IsCharged` varchar(45) DEFAULT 'UnCharged',
-  `ChargedTime` datetime null,
-  PRIMARY KEY (`ReqID`, `AccountID`, `PledgeTime`),
-  FOREIGN KEY (`ReqID`) REFERENCES `Request` (`ReqID`),
-  FOREIGN KEY (`AccountID`) REFERENCES `User` (`AccountID`));
+  PRIMARY KEY (`ProjID`, `UID`),
+  FOREIGN KEY (`ProjID`) REFERENCES `Projects` (`ProjID`),
+  FOREIGN KEY (`UID`) REFERENCES `UserProfiles` (`UID`));
 
-  CREATE TABLE `Reviews` (
-  `AccountID` varchar(45) not null,
+drop table if exists `Charges`;
+create table `Charges` (
+  `ProjID` int not null,
+  `UID` varchar(45) not null,
+  `Amount` decimal(10,2) not null,
+  `CreditCardNumber` varchar(45) not null,
+  `ChargedTime` datetime not null,
+  PRIMARY KEY (`UID`, `ProjID`),
+  FOREIGN KEY (`UID`, `ProjID`) REFERENCES `Pledges` (`UID`, `ProjID`));
+
+drop table if exists `Reviews`;
+create table `Reviews` (
+  `UID` varchar(45) not null,
   `ProjID` int not null,
   `Rating` int not null,
   `RateTime` datetime not null,
-  `Review` varchar(3000) null,
-  PRIMARY KEY (`AccountID`, `ProjID`),
-  FOREIGN KEY (`AccountID`) REFERENCES `SponsorShip`(`AccountID`),
-  FOREIGN KEY (`ProjID`) REFERENCES `Project`(`ProjID`));
+  `UserReview` varchar(3000) null,
+  PRIMARY KEY (`UID`, `ProjID`),
+  FOREIGN KEY (`UID`, `ProjID`) REFERENCES `Pledges`(`UID`, `ProjID`));
 
- create table `Like` (
-  `AccountID` varchar(45) not null,
-  `ReqID` int not null,
-  PRIMARY KEY (`AccountID`, `ReqID`),
-  FOREIGN KEY (`AccountID`) REFERENCES `User`(`AccountID`),
-  FOREIGN KEY (`ReqID`) REFERENCES `Request`(`ReqID`));
+drop table if exists `Likes`;
+create table `Likes` (
+  `UID` varchar(45) not null,
+  `ProjID` int not null,
+  PRIMARY KEY (`UID`, `ProjID`),
+  FOREIGN KEY (`UID`) REFERENCES `UserProfiles`(`UID`),
+  FOREIGN KEY (`ProjID`) REFERENCES `Projects`(`ProjID`));
   
-  
-  create table `Material` (
+drop table if exists `Materials`;
+create table `Materials` (
   `MID` int not null,
   `MName` varchar(45) not null,
-  `AccountID` varchar(45) not null,
+  `UID` varchar(45) not null,
   `Path` varchar(255) not null,
   `UploadTime` datetime not null,
   PRIMARY KEY (`MID`),
-  FOREIGN KEY (`AccountID`) REFERENCES `User` (`AccountID`));
+  FOREIGN KEY (`UID`) REFERENCES `UserProfiles` (`UID`));
 
-  create table `Samples` (
-  `MID` int not null,
-  `ReqID` int not null,
-  PRIMARY KEY (`MID`, `ReqID`),
-  FOREIGN KEY (`MID`) REFERENCES `Material` (`MID`),
-  FOREIGN KEY (`ReqID`) REFERENCES `Request` (`ReqID`));
-
-  create table `Attach` (
+drop table if exists `Attach`;
+create table `Attach` (
   `MID` int not null,
   `ProjID` int not null,
   PRIMARY KEY (`MID`, `ProjID`),
-  FOREIGN KEY (`MID`) REFERENCES `Material` (`MID`),
-  FOREIGN KEY (`ProjID`) REFERENCES `Project` (`ProjID`));
+  FOREIGN KEY (`MID`) REFERENCES `Materials` (`MID`),
+  FOREIGN KEY (`ProjID`) REFERENCES `Projects` (`ProjID`));
 
- create table `Update` (
-  `AccountID` varchar(45) not null,
+drop table if exists `StageUpdate`;
+create table `StageUpdate` (
+  `UID` varchar(45) not null,
   `ProjID` int not null,
   `MID` int not null,
   `UpdateTime` datetime not null,
-  PRIMARY KEY (`AccountID`, `ProjID`, `MID`, `UpdateTime`),
-  FOREIGN KEY (`AccountID`) REFERENCES `User` (`AccountID`),
-  FOREIGN KEY (`ProjID`) REFERENCES `Project` (`ProjID`),
-  FOREIGN KEY (`MID`) REFERENCES `Material` (`MID`));
+  PRIMARY KEY (`UID`, `ProjID`, `MID`, `UpdateTime`),
+  FOREIGN KEY (`UID`) REFERENCES `UserProfiles` (`UID`),
+  FOREIGN KEY (`ProjID`) REFERENCES `Projects` (`ProjID`),
+  FOREIGN KEY (`MID`) REFERENCES `Materials` (`MID`));
 
- create table `Comments` (
-  `AccountID` varchar(45) not null,
-  `ReqID` int not null,
-  `Comment` varchar(3000) not null,
+drop table if exists `Comments`;
+create table `Comments` (
+  `UID` varchar(45) not null,
+  `ProjID` int not null,
+  `UserComment` varchar(3000) not null,
   `CommentTime` datetime not null,
-  PRIMARY KEY (`AccountID`, `ReqID`, `CommentTime`),
-  FOREIGN KEY (`AccountID`) REFERENCES `User` (`AccountID`),
-  FOREIGN KEY (`ReqID`) REFERENCES `Request` (`ReqID`));
+  PRIMARY KEY (`UID`, `ProjID`, `CommentTime`),
+  FOREIGN KEY (`UID`) REFERENCES `UserProfiles` (`UID`),
+  FOREIGN KEY (`ProjID`) REFERENCES `Projects` (`ProjID`));
 
 create table `Charge` (
   `AccountID` varchar(45) not null,
