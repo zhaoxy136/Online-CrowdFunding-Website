@@ -47,7 +47,7 @@ create table `Projects` (
  `LikeCount` int DEFAULT 0,
  `SponsorCount` int DEFAULT 0,
  `AlreadyFund` decimal(10,2) DEFAULT 0.00,
- `Status` varchar(45) DEFAULT'Funding',
+ `Status` varchar(45) DEFAULT 'Funding',
  `AvgRating` decimal(2,1) null,
  PRIMARY KEY (`ProjID`),
  FOREIGN KEY (`OwnerID`) REFERENCES `UserProfiles`(`UID`));
@@ -109,7 +109,7 @@ create table `Materials` (
   `MID` int not null,
   `MName` varchar(45) not null,
   `UID` varchar(45) not null,
-  `Path` varchar(255) not null,
+  `MPath` varchar(255) not null,
   `UploadTime` datetime not null,
   PRIMARY KEY (`MID`),
   FOREIGN KEY (`UID`) REFERENCES `UserProfiles` (`UID`));
