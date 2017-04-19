@@ -48,4 +48,4 @@ INSERT INTO Tags (tag) VALUES ('Dance');
 
 INSERT INTO Tags (tag) VALUES ('Fitness');
 
-
+INSERT INTO Tags (tag) VALUES ('Fashion');
