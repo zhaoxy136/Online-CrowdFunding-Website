@@ -142,15 +142,3 @@ create table `Comments` (
   PRIMARY KEY (`UID`, `ProjID`, `CommentTime`),
   FOREIGN KEY (`UID`) REFERENCES `UserProfiles` (`UID`),
   FOREIGN KEY (`ProjID`) REFERENCES `Projects` (`ProjID`));
-
-create table `Charge` (
-  `AccountID` varchar(45) not null,
-  `ReqID` int not null,
-  `CreditCardNumber` varchar(45) null,
-  `Amount` decimal(10,2) not null,
-  `PledgeTime` datetime not null,
-  `ChargedTime` datetime not null,
-
-  PRIMARY KEY (`AccountID`, `ReqID`, `PledgeTime`, `ChargedTime`),
-  FOREIGN KEY (`AccountID`, `ReqID`, `PledgeTime`) REFERENCES `SponsorShip` (`AccountID`, `ReqID`, `PledgeTime`));
-
