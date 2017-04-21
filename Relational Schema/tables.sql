@@ -5,7 +5,7 @@ use CrowdFund;
 drop table if exists `Accounts`;
 create table `Accounts` (
  `UID` varchar(45) not null,
- `Password` varchar(45) not null,
+ `Passcode` varchar(45) not null,
  PRIMARY KEY (`UID`));
 
 drop table if exists `UserProfiles`;
