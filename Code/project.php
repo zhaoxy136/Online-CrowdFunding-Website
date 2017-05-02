@@ -19,7 +19,7 @@ include 'function.php';
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>项目</title>
+    <title>Project Details</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -190,7 +190,7 @@ include 'function.php';
                 <span class="icon-bar"></span>
 
             </button>
-            <a class="navbar-brand">Crowd Funding</a>
+            <a class="navbar-brand">FFFunding</a>
 
         </div>
 
@@ -282,8 +282,7 @@ include 'function.php';
 
             <h5><span class="glyphicon glyphicon-user"></span> Project Owner</h5>
 
-
-        <a href="profile.php" class ="link">
+        <?php echo "<a href='profile.php?userid=$uid' class ='link'>";?>
         <h2><?php echo $firstname;?><br/>
                      <?php echo $lastname;?></h2></a>
 
@@ -407,17 +406,17 @@ include 'function.php';
 
                                 <h3><?php echo $mid; ?></h3>
 
-                                <p><a href="<?php echo $mpath; ?>" class ="link"><?php echo $mpath;?></a></p>
+                                <p><a href="<?php echo $mpath; ?>" class="img-responsive center-block"><img src="<?php echo $mpath; ?>" alt=""/></a></p>
                                 <h5><?php  echo $updatetime; ?></h5>
 
                                 <hr>
 
                                 <h4>Samples:</h4>
                                 <h3><?php echo $sampleid; ?></h3>
-                                <p><a href="<?php echo $samplepath; ?>" class ="link"><?php echo $samplepath;?></a></p>
+
+                                <p><a href="<?php echo $samplepath; ?>" class="img-responsive center-block"><img src="<?php echo $samplepath; ?>" alt=""/></a></p>
 
                             </div>
-
 
 
                             <div role="tabpanel" class="tab-pane fade" id="Section2">
@@ -477,6 +476,7 @@ include 'function.php';
 
 
                             <div role="tabpanel" class="tab-pane fade" id="Section3">
+
                                 <h3><?php echo $rateby; ?> - Rated <?php echo $ratingstar; ?> Stars</h3>
                                 <h5><?php  echo $ratetime; ?></h5>
                                 <h3><?php  echo $reviewcontent; ?></h3>
@@ -499,7 +499,7 @@ include 'function.php';
 
                                                 <button class="close" data-dismiss="modal">x</button>
 
-                                                <h4 class="modal-title">Review</h4>
+                                                <h4 class="modal-title">Reviews</h4>
 
                                             </div>
 
@@ -508,7 +508,7 @@ include 'function.php';
                                                 Rate from 0 to 5 stars.
 
                                                 <br/>
-                                                <input id="input-21e" value="0" type="number" class="rating" min=0 max=5 step=0.5 data-size="xs" >
+                                                <input id="input-21e" value="0" type="number" class="rating" min=0 max=5 step=0.5 data-size="xs">
                                                 <br/>
 
                                                 <div class="row">
@@ -533,13 +533,6 @@ include 'function.php';
                                         </div>
                                     </div>
                                 </div>
-
-
-
-
-
-
-
 
 
                             </div>
