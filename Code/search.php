@@ -3,14 +3,18 @@
  * Created by PhpStorm.
  * User: ft
  * Date: 2017/4/28
- * Time: 下午12:08
+ * Time: 下午5:05
  */
-session_start();
+
 include 'connection.php';
 include 'function.php';
+
+
+$keyword = $_GET["searchkeyword"];
+
+
+
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +25,7 @@ include 'function.php';
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
 
-    <title>FunFunFunding</title>
+    <title>Search Results</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -64,20 +68,15 @@ include 'function.php';
             font-size: 300%;
         }
 
-        #footer {
-            background-color: #B0D1FB;
-        }
 
-        .marginBottom{
-            margin-bottom: 30px;
-        }
 
-        .tagcontainer{
-            height: 350px;
-            width: 1200px;
-            background:url("images/hometagbackground.jpg") center;
-            color: white;
-        }
+
+
+
+
+
+
+
 
     </style>
 
@@ -132,39 +131,50 @@ include 'function.php';
 <!-- Header -->
 <header id="top" class="searchheader">
     <div class="text-vertical-center" >
-        <h1>Explore The Ideas</h1>
+        <h2>Searched Keyword: <?php echo $keyword;?></h2>
 
-        <br>
+
+        <br/>
+        <?php
+
+        $query0 = $conn->prepare(
+            "SELECT ProjID, ProjName, PostTime
+                    FROM Projects 
+                    WHERE ProjName like '%$keyword%'
+                    Order by PostTime desc");
+        $query0 -> execute();
+        $query0 -> bind_result($projid,$projname,$posttime);
+
+
+        ?>
 
         <div class="container" style="margin-top: 5%;">
-            <div class="col-md-6 col-md-offset-3">
 
-                <!-- Search Form -->
-                <form role="form" action="search.php" method="GET">
+            <div class="col-md-12">
+                <table class="table  table-hover" style="z-index = +1" >
+                    <thead class="thead-inverse">
+                    <tr>
+                        <td> Project ID </td><td> Project Name </td><td> Post Time </td></tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    while($query0 -> fetch()){
+                        echo "<tr>
+                              <td><a href ='project.php?projectname=$projname'>$projid</a></td><td> $projname </td><td> $posttime </td>";
+                        echo "</tr>\n";
+                    }
+                    $query0 -> close();
+                    ?>
+                    </tbody>
 
-                    <!-- Search Field -->
-                    <div class="row">
+                </table>
 
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input class="form-control" type="text" name="searchkeyword" placeholder="Music, movie, fashion..." required/>
-                                <span class="input-group-btn">
-                            <button class="btn btn-success" type="submit" value="Search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                                    <span style="margin-left:10px;"></span></button>
-                                </span>
 
-                            </div>
-                            <br/>
-                            <h3>Search what you want</h3>
-                        </div>
-                    </div>
-
-                </form>
-                <!-- End of Search Form -->
 
             </div>
         </div>
 
+        <a href="explore.php" class="btn btn-dark btn-xs">Back to Explore</a>
 
     </div>
 </header>
@@ -193,7 +203,6 @@ include 'function.php';
 
             <h1 class="center title">Try Tags :)</h1>
             <br/>
-
 
             <div class="center">
 
@@ -291,4 +300,3 @@ include 'function.php';
 
 
 </body>
-</html>
