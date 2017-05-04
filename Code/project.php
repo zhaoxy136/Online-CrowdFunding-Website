@@ -5,9 +5,11 @@
  * Date: 2017/4/27
  * Time: 下午2:12
  */
+session_start();
+require 'connection.php';
+require 'function.php';
 
-include 'connection.php';
-include 'function.php';
+$loginuser = $_SESSION['loginuser'];
 ?>
 
 
@@ -30,6 +32,7 @@ include 'function.php';
     <link href="css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
     <script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
     <script src="js/star-rating.min.js" type="text/javascript"></script>
+    <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 
 
 
@@ -202,20 +205,57 @@ include 'function.php';
                 <li><a href ="fundrequest.php">Start a project</a></li>
             </ul>
 
-            <form class="navbar-form navbar-right" action="timeline.php" method="post">
+            <?php
 
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Username" name="loginname"/>
-                </div>
+            if(isset($loginuser)){
 
-                <div class="form-group">
-                    <input type="password" class="form-control" placeholder="*****" name="loginpassword"/>
-                </div>
-                <input type="submit" class="btn btn-success" name="submit" value="Log in"/>
+                //echo "welcome $loginuser ";
 
-                <button type="button" class ="btn btn-danger" onclick="window.location.href='signup.php'">Sign Up</button>
+                //echo " <button type=\"button\" class =\"btn btn-danger\" onclick=\"window.location.href='logout.php'\">Bye Bitch</button>";
 
-            </form>
+                echo"
+
+
+            
+            
+            <div class=\"navbar-text navbar-right dropdown\">
+                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">
+                   $loginuser<span class=\"caret\" ></span></a>
+                    <ul class=\"dropdown-menu\">
+                      <li><a href = \"profile.php?userid=$loginuser\"> My Profile </a></li>
+                      <li><a href = \"editProfile.php\"> Settings</a></li>
+                      <li><a href = \"logout.php\"> Log Out </a></li>
+                  </ul>
+                </div> ";
+
+
+
+            }else{
+
+
+                ?>
+
+                <form class="navbar-form navbar-right" method="POST" action="loginCheck.php">
+
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" placeholder="Username" name="loginname">
+
+                        <input type="password" class="form-control" placeholder="*****" name="password">
+
+                        <input type="submit" class="btn btn-success"  value="Log In">
+
+                    </div>
+
+                    <button type="button" class ="btn btn-danger" onclick="window.location.href='signup.php'">Sign Up</button>
+
+                </form>
+
+
+
+                <?php
+            }
+            ?>
 
 
 
@@ -269,9 +309,14 @@ include 'function.php';
         ?>
 
 
+        <div><span class="glyphicon glyphicon-thumbs-up"></span></div>
+
+
     </div>
 
 </div>
+
+
 
 <div class="container contentContainer" id="midContainer">
     <hr>
@@ -329,12 +374,92 @@ include 'function.php';
 
     <hr>
 
+
+
+
+
     <div class="center">
 
-        <a class="btn btn-success btn-lg" href="pledgepage.php" role="button">SPONSOR IT!</a>
+        <?php
+
+        $query6 = $conn->prepare(
+                    "SELECT Tag
+                    FROM Projects natural join Label l
+                    WHERE l.ProjID = '$projid'");
+        $query6 -> execute();
+        $query6 -> bind_result($tag);
+
+        echo " Tags: ";
+        while($query6 -> fetch()){
+            echo "<td><a href ='tag.php?clicktag=$tag'>$tag</a>  </td>\n";
+        }
+
+
+
+        $query6->close();
+
+        ?>
+
+
+        <hr>
+
+
+        <br/>
+
+    </div>
+
+
+    <div class="center">
+
+        <a class="btn btn-success btn-lg" data-toggle ="modal" data-target="#pledgeModal" role="button">SPONSOR IT!</a>
         <br/><br/>
 
     </div>
+
+    <div class="modal" id="pledgeModal">
+
+        <div class ="modal-dialog modal-sm">
+
+            <div class ="modal-content">
+
+                <div class="modal-header">
+
+                    <button class="close" data-dismiss="modal">x</button>
+
+                    <h4 class="modal-title">Make a Pledge</h4>
+
+                </div>
+
+
+                <form role ="form" class="form-inline" action="pledgepage.php" method="post">
+                <div class ="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-md-12 marginTop">
+                            <p class="form-group marginmiddle">
+
+                                <span class="glyphicon glyphicon-usd"></span>
+                                    <input class="form-control" type="number" placeholder="Amount" step="50" min="500"/>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class ="modal-footer">
+
+                    <button class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-success">Sponsor</button>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
 
 
 
@@ -406,15 +531,16 @@ include 'function.php';
 
                                 <h3><?php echo $mid; ?></h3>
 
-                                <p><a href="<?php echo $mpath; ?>" class="img-responsive center-block"><img src="<?php echo $mpath; ?>" alt=""/></a></p>
+                                <p><a href="<?php echo $mpath; ?>" class="center-block"><img src="<?php echo $mpath; ?>" alt="" class="img-responsive" /></a></p>
                                 <h5><?php  echo $updatetime; ?></h5>
+
 
                                 <hr>
 
                                 <h4>Samples:</h4>
                                 <h3><?php echo $sampleid; ?></h3>
 
-                                <p><a href="<?php echo $samplepath; ?>" class="img-responsive center-block"><img src="<?php echo $samplepath; ?>" alt=""/></a></p>
+                                <p><a href="<?php echo $samplepath; ?>" class="center-block"><img src="<?php echo $samplepath; ?>" alt="" class="img-responsive" /></a></p>
 
                             </div>
 
@@ -572,6 +698,7 @@ include 'function.php';
         $(".rating-kv").rating();
 
     });
+
 
 
 
