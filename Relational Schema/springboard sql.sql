@@ -267,12 +267,12 @@ end$$
 SET GLOBAL event_scheduler = ON$$
 drop event if exists `DailyCheckFundEndTime`$$
 create event `DailyCheckFundEndTime` 
-on schedule every 3 minute
+on schedule every 1 day
 do 
 	begin
-		update `Projects` set Status = 'Failed'
+		update `Projects` set Projects.Status = 'Failed'
         where Projects.Status = 'Funding' and Projects.FundingEndtime <= now() and Projects.AlreadyFund < Projects.MinFundValue;
-		update `Projects` set Projects.Status = 'Working'
+		update `Projects` set Projects.Status = 'OnGoing', Projects.StartTime = now()
         where Projects.Status = 'Funding' and Projects.FundingEndtime <= now() and Projects.AlreadyFund >= Projects.MinFundValue;
 end$$
 
@@ -396,15 +396,6 @@ end$$
 
 delimiter ;
 
-update `Projects` set Projects.Status = 'Failed'
-        where Projects.Status = 'Funding' and Projects.FundingEndtime <= now() and Projects.AlreadyFund < Projects.MinFundValue;
-		update `Projects` set Projects.Status = 'Working'
-        where Projects.Status = 'Funding' and Projects.FundingEndtime <= now() and Projects.AlreadyFund >= Projects.MinFundValue;
-
-update `Projects` set Projects.Status = 'F'
-        where Projects.Status = 'Funding' and Projects.FundingEndtime <= now() and Projects.AlreadyFund <= Projects.MinFundValue;
-update `Projects` set Projects.Status = 'Working'
-        where Projects.Status = 'Funding' and Projects.FundingEndtime <= now() and Projects.AlreadyFund > Projects.MinFundValue;
         
 INSERT INTO Projects (ProjID, ProjName, Description, OwnerID, MinFundValue, MaxFundValue, PostTime, 
 					FundingEndtime, StartTime, TargetTime, CompleteTime, LikeCount, SponsorCount, AlreadyFund, AvgRating)
