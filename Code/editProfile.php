@@ -6,7 +6,6 @@
 $loginuser = $_SESSION['loginuser'];
 
 
-
 if (!isset($loginuser)) {
     echo "<script>alert('Please Log in First!')</script>";
     echo "<script>location.href='homepage.php'</script>";
@@ -25,10 +24,16 @@ if (!isset($loginuser)) {
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <style type="text/css">
+        body{
+            background: url("images/pinkbackground.png") no-repeat center center scroll;
+            background-size: cover;
+        }
+
     	.profileform{
-    		background-color: snow;
+
+
     		position: relative;
-    		margin-top: 50px;
+    		margin-top: 100px;
     		margin-left: auto;
     		margin-right: auto;
     		width: 1100px;
@@ -250,7 +255,7 @@ if (!isset($loginuser)) {
     <div class="profileform">
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
     	<div class="row">
-    	<h1 style="text-align: center;">Please complete your profile!</h1>
+    	<h1 style="text-align: center;">Update Your Profile :)</h1>
     	</div>
     	<hr>
     	<div class="row">
@@ -374,9 +379,11 @@ if (!isset($loginuser)) {
 
  		<hr>
  		<div class="row">
+            <div class="col-md-12 col-md-offset-4">
     		<input type="submit" class="btn btn-success btn-margin btn-lg" name="commit" value="Save">
     		<a class="btn" href="profile.php?userid=<?php echo $loginuser;?>">View profile</a>
  		</div>
+        </div>
     	</form>
     </div>
     <?php

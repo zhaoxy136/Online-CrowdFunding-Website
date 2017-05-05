@@ -36,12 +36,6 @@ $loginuser = $_SESSION['loginuser'];
 
 
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
     <style>
 
@@ -193,7 +187,7 @@ $loginuser = $_SESSION['loginuser'];
                 <span class="icon-bar"></span>
 
             </button>
-            <a class="navbar-brand">FFFunding</a>
+            <a class="navbar-brand">Spring Board</a>
 
         </div>
 
@@ -215,8 +209,6 @@ $loginuser = $_SESSION['loginuser'];
 
                 echo"
 
-
-            
             
             <div class=\"navbar-text navbar-right dropdown\">
                     <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">
@@ -299,7 +291,7 @@ $loginuser = $_SESSION['loginuser'];
          // echo "<div><h2 class=\"center\">".$description. "</h2></div>";
         $query1 = $conn->prepare("SELECT * FROM UserProfiles WHERE UID='$ownerid'");
         $query1 -> execute();
-        $query1 -> bind_result($uid,$firstname,$lastname,$gender,$city,$state,$cellphone,
+        $query1 -> bind_result($uid,$firstname,$lastname,$avatar,$gender,$city,$state,$cellphone,
                     $emailaddress, $creditcardnumber, $interests);
         $query1->fetch();
 
@@ -462,38 +454,8 @@ $loginuser = $_SESSION['loginuser'];
 
 
 
-
-
-
-
-
     <?php
 
-    $query2 = $conn->prepare("SELECT * FROM StageUpdate WHERE ProjID='$projid' order by UpdateTime DESC ");
-    $query2 -> execute();
-    $query2 -> bind_result($uploader, $currentproj, $mid, $updatetime);
-    $query2->fetch();
-    $query2->close();
-
-
-    $query3 = $conn->prepare("SELECT * FROM Attach WHERE ProjID='$projid' ");
-    $query3 -> execute();
-    $query3 -> bind_result($sampleid, $sampletime);
-    $query3->fetch();
-    $query3->close();
-
-
-    $query22 = $conn->prepare("SELECT MPath FROM Materials WHERE MID='$mid' ");
-    $query22 -> execute();
-    $query22 -> bind_result($mpath);
-    $query22->fetch();
-    $query22->close();
-
-    $query33 = $conn->prepare("SELECT MPath FROM Materials WHERE MID='$sampleid' ");
-    $query33 -> execute();
-    $query33 -> bind_result($samplepath);
-    $query33->fetch();
-    $query33->close();
 
     $query4 = $conn->prepare("SELECT * FROM Comments WHERE ProjID='$projid' order by CommentTime DESC ");
     $query4 -> execute();
@@ -529,18 +491,99 @@ $loginuser = $_SESSION['loginuser'];
                             <div role="tabpanel" class="tab-pane fade in active" id="Section1">
 
 
-                                <h3><?php echo $mid; ?></h3>
 
-                                <p><a href="<?php echo $mpath; ?>" class="center-block"><img src="<?php echo $mpath; ?>" alt="" class="img-responsive" /></a></p>
-                                <h5><?php  echo $updatetime; ?></h5>
+
+
+                                <h4>Updates:</h4><br/>
+
+
+                                <?php
+
+
+                                $query2 = $conn->prepare("SELECT MID, MDescription, MPath, UpdateTime
+                                                                FROM StageUpdate natural join Materials
+                                                                WHERE ProjID='$projid' order by UpdateTime DESC ");
+                                $query2 ->execute();
+                                $query2 ->bind_result($updateid, $updatedescription, $updatepath, $updatetime);
+
+
+
+
+                                while ($query2->fetch()){
+
+
+
+
+                                    echo "<h4>$updateid</h4>
+                                            <h4>$updatetime</h4>
+                                            <h3>$updatedescription</h3><br/>
+                                            <p><a href=\" $updatepath\" class=\"center-block\"><img src=\" $updatepath\" class=\"img-responsive\" /></a></p>";
+
+                                    echo "<br/>";
+
+                                }
+
+
+                                if(!$updateid){
+                                    echo "The project has no updates yet. <br/>";
+                                }else {
+                                }
+
+
+                                $query2->close();
+
+
+
+
+                                if($loginuser == $ownerid){
+
+                                    echo "<a href='update.php?projectid=$projid&projectname=$projname'><button class='btn btn-success marginTop'>Update Your Project</button></a>";
+                                }
+
+
+                                ?>
 
 
                                 <hr>
 
-                                <h4>Samples:</h4>
-                                <h3><?php echo $sampleid; ?></h3>
 
-                                <p><a href="<?php echo $samplepath; ?>" class="center-block"><img src="<?php echo $samplepath; ?>" alt="" class="img-responsive" /></a></p>
+                                <h4>Samples:</h4><br/>
+
+                                <?php
+
+
+                                $query3 = $conn->prepare("SELECT MID, MDescription, MPath
+                                                                FROM Attach natural join Materials
+                                                                WHERE ProjID='$projid' ");
+                                $query3 ->execute();
+                                $query3 ->bind_result($sampleid, $sampledescription, $samplepath);
+
+
+
+                                while ($query3->fetch()){
+
+                                    echo "<h4>$sampleid</h4>
+                                            <h3>$sampledescription</h3><br/>
+                                            <p><a href=\" $samplepath\" class=\"center-block\"><img src=\" $samplepath\" class=\"img-responsive\" /></a></p>";
+
+                                    echo "<br/>";
+
+                                    }
+
+                                if(!$sampleid){
+                                    echo "The owner didn't upload samples. ";
+                                }
+
+
+                                $query3->close();
+
+
+
+                                ?>
+
+
+
+
 
                             </div>
 
@@ -553,7 +596,8 @@ $loginuser = $_SESSION['loginuser'];
                                 <br/>
 
 
-                                <button class ="btn btn-success" data-toggle ="modal" data-target="#commentModal">
+
+                                <button class="btn btn-success" data-toggle ="modal" data-target="#commentModal">
                                     Make a comment
                                 </button>
 
@@ -579,18 +623,30 @@ $loginuser = $_SESSION['loginuser'];
                                                     <div class="col-md-12 marginTop">
                                                         <p class="form-group marginmiddle">
 
-                                                            <textarea class="form-control"  rows="8" placeholder="Tell the owner what you think..."></textarea>
+                                                            <textarea name="commentcontent"  class="form-control"  rows="8" placeholder="Tell the owner what you think..."></textarea>
 
                                                     </div>
                                                 </div>
 
                                             </div>
+                                            <form method="post">
 
                                             <div class ="modal-footer">
 
                                                 <button class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button class="btn btn-success">Post comment :)</button>
+                                                <button type="submit" class="btn btn-success">Post comment :)</button>
                                             </div>
+                                            </form>
+
+
+
+
+                                            <?php
+
+
+
+
+                                            ?>
 
 
                                         </div>
@@ -634,7 +690,7 @@ $loginuser = $_SESSION['loginuser'];
                                                 Rate from 0 to 5 stars.
 
                                                 <br/>
-                                                <input id="input-21e" value="0" type="number" class="rating" min=0 max=5 step=0.5 data-size="xs">
+                                                <input id="input-21e" value="0" type="number" class="rating" min=0 max=5 step=1 data-size="xs">
                                                 <br/>
 
                                                 <div class="row">

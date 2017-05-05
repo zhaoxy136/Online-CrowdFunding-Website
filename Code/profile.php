@@ -119,7 +119,7 @@ if (!isset($loginuser)) {
                     <span class="icon-bar"></span>
 
                 </button>
-                <a class="navbar-brand">FFFunding</a>
+                <a class="navbar-brand">Spring Board</a>
 
             </div>
 
@@ -359,7 +359,7 @@ if (!isset($loginuser)) {
 
 
 
-
+                </section>
 
 			</div>
 
@@ -378,7 +378,7 @@ if (!isset($loginuser)) {
 				<div class="inner">
 
 					<ul class="copyright">
-						<li>&copy;Fun Fun Funding</li>
+						<li>&copy;Spring Board Funding</li>
 					</ul>
 				</div>
 			</footer>

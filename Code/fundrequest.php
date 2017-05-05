@@ -44,9 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo $requestmaxfund;
     echo $requestfundendtime;
     echo $requesttargettime;
-
-
-
     echo $requestposttime;
     echo $requeststatus;
 
@@ -58,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $insertquery -> execute();
     $insertquery ->close();
 
-   echo "<script>location.href='tagandsample.php?projectname=$requestname'</script>";
+   echo "<script>location.href='tagandsample.php?requestid=$requestid'</script>";
 
 }else{
 
