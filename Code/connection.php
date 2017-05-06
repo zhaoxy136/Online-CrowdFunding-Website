@@ -6,7 +6,7 @@
  * Time: 下午9:01
  */
 
-
+date_default_timezone_set('America/New_York');
 //Connect to MySQL
 
     $conn = mysqli_connect("localhost","root","root","CrowdFund");

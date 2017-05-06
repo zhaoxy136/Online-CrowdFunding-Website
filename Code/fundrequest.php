@@ -5,8 +5,61 @@
  * Date: 2017/4/28
  * Time: 下午5:31
  */
-include 'connection.php';
-include 'function.php';
+session_start();
+
+require 'connection.php';
+require 'function.php';
+
+
+$loginuser = $_SESSION['loginuser'];
+
+
+
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    date_default_timezone_set('America/New_York');
+
+
+    $requestname = $_POST['q1'];
+    $requestdscp = $_POST['q2'];
+    $requestminfund = $_POST['q3'];
+    $requestmaxfund = $_POST['q4'];
+    $requestfundendtime = $_POST['q5'];
+    $requesttargettime = $_POST['q6'];
+
+
+
+    $requestposttime = date('Y-m-d H:i:s');
+    $requeststatus = "funding";
+
+    $requestowner = $loginuser;
+
+    $requestid = "86666";
+
+/*
+    echo $requestname;
+    echo $requestdscp;
+    echo $requestminfund;
+    echo $requestmaxfund;
+    echo $requestfundendtime;
+    echo $requesttargettime;
+    echo $requestposttime;
+    echo $requeststatus;
+
+*/
+
+    $insertquery = $conn->prepare("INSERT INTO Projects(ProjID, ProjName, Description, OwnerID, MinFundValue, MaxFundValue, PostTime, FundingEndtime, StartTime, TargetTime, CompleteTime, LikeCount, SponsorCount, AlreadyFund, Status, AvgRating)
+                          VALUES ('$requestid', '$requestname', '$requestdscp', '$requestowner', '$requestminfund', '$requestmaxfund', '$requestposttime', '$requestfundendtime', null,'$requesttargettime',null, null,null, null, '$requeststatus', null)");
+
+    $insertquery -> execute();
+    $insertquery ->close();
+
+   echo "<script>location.href='tagandsample.php?requestid=$requestid'</script>";
+
+}else{
+
+
 ?>
 
 
@@ -24,12 +77,11 @@ include 'function.php';
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
 
-
-    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="css/demo.css" />
-    <link rel="stylesheet" type="text/css" href="css/component.css" />
-    <link rel="stylesheet" type="text/css" href="css/cs-select.css" />
-    <link rel="stylesheet" type="text/css" href="css/cs-skin-boxes.css" />
+    <link rel="stylesheet" type="text/css" href="css/normalize.css"/>
+    <link rel="stylesheet" type="text/css" href="css/demo.css"/>
+    <link rel="stylesheet" type="text/css" href="css/component.css"/>
+    <link rel="stylesheet" type="text/css" href="css/cs-select.css"/>
+    <link rel="stylesheet" type="text/css" href="css/cs-skin-boxes.css"/>
 
     <script src="js/modernizr.custom.js"></script>
 
@@ -37,12 +89,11 @@ include 'function.php';
     <style>
 
 
-        .navbar-brand{
+        .navbar-brand {
             font-size: 1.8em;
         }
 
-        #topContainer{
-
+        #topContainer {
 
         }
 
@@ -50,17 +101,15 @@ include 'function.php';
             font-size: 300%;
 
         }
-        .center{
+
+        .center {
             text-align: center;
         }
-
 
         .form-control {
             display: block;
             width: 50%;
         }
-
-
 
 
     </style>
@@ -69,43 +118,77 @@ include 'function.php';
 <body>
 
 
-<div class ="navbar-default navbar-fixed-top">
-    <div class = "container">
+<div class="navbar-default navbar-fixed-top">
+    <div class="container">
 
-        <div class ="navbar-header">
-            <button class ="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
 
             </button>
-            <a class="navbar-brand">Crowd Funding</a>
+            <a class="navbar-brand">Spring Board</a>
 
         </div>
 
         <div class="collapse navbar-collapse">
 
-            <ul class ="nav navbar-nav">
+            <ul class="nav navbar-nav">
                 <li><a href="homepage.php">Home</a></li>
                 <li><a href="explore.php">Explore</a></li>
-                <li class="active"><a href ="fundrequest.php">Start a project</a></li>
+                <li class="active"><a href="fundrequest.php">Start a project</a></li>
             </ul>
 
-            <form class="navbar-form navbar-right" action="timeline.php" method="post">
+            <?php
 
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Username" name="loginname"/>
-                </div>
+            if (isset($loginuser)) {
 
-                <div class="form-group">
-                    <input type="password" class="form-control" placeholder="*****" name="loginpassword"/>
-                </div>
-                <input type="submit" class="btn btn-success" name="submit" value="Log in"/>
+                //echo "welcome $loginuser ";
 
-                <button type="button" class ="btn btn-danger" onclick="window.location.href='signup.php'">Sign Up</button>
+                //echo " <button type=\"button\" class =\"btn btn-danger\" onclick=\"window.location.href='logout.php'\">Bye Bitch</button>";
 
-            </form>
+                echo "
+            
+            <div class=\"navbar-text navbar-right dropdown\">
+                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">
+                   $loginuser<span class=\"caret\" ></span></a>
+                    <ul class=\"dropdown-menu\">
+                      <li><a href = \"profile.php?userid=$loginuser\"> My Profile </a></li>
+                      <li><a href = \"editProfile.php\"> Settings</a></li>
+                      <li><a href = \"logout.php\"> Log Out </a></li>
+                  </ul>
+                </div> ";
+
+
+            } else {
+
+
+                ?>
+
+                <form class="navbar-form navbar-right" method="POST" action="loginCheck.php">
+
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" placeholder="Username" name="loginname">
+
+                        <input type="password" class="form-control" placeholder="*****" name="password">
+
+                        <input type="submit" class="btn btn-success" value="Log In">
+
+                    </div>
+
+                    <button type="button" class="btn btn-danger" onclick="window.location.href='signup.php'">Sign Up
+                    </button>
+
+                </form>
+
+
+                <?php
+            }
+            ?>
+
 
         </div>
     </div>
@@ -113,10 +196,9 @@ include 'function.php';
 
 <div class="fs-form-wrap" id="fs-form-wrap" style="margin-top: 50px;">
     <div class="fs-title">
-        <h1>Start your own dream <br/>
-            By post a funding request right now</h1>
+        <h1>Start your own dream by post a funding request right now</h1>
     </div>
-    <form id="myform" class="fs-form fs-form-full" autocomplete="off">
+    <form id="myform" class="fs-form fs-form-full" autocomplete="off" action="fundrequest.php" method="post">
         <ol class="fs-fields">
             <li>
                 <label class="fs-field-label fs-anim-upper" for="q1">What's Your Project Name?</label>
@@ -124,49 +206,43 @@ include 'function.php';
             </li>
             <li>
                 <label class="fs-field-label fs-anim-upper" for="q2">Describe your project in 140 words</label>
-                <textarea class="fs-anim-lower" id="q2" name="q2" placeholder="Describe here"></textarea>
+                <textarea class="fs-anim-lower" id="q2" name="q2" placeholder="Describe here" required></textarea>
             </li>
             <li>
                 <label class="fs-field-label fs-anim-upper" for="q3">How much is your MINIMUM budget?</label>
-                <input class="fs-mark fs-anim-lower" id="q3" name="q3" type="number" placeholder="1000" step="50" min="100"/>
+                <input class="fs-mark fs-anim-lower" id="q3" name="q3" type="number" placeholder="1000" step="50"
+                       min="100" required/>
             </li>
             <li>
                 <label class="fs-field-label fs-anim-upper" for="q4">How much is your MAXIMUM expected value?</label>
-                <input class="fs-mark fs-anim-lower" id="q4" name="q4" type="number" placeholder="5000" step="50" min="100"/>
+                <input class="fs-mark fs-anim-lower" id="q4" name="q4" type="number" placeholder="5000" step="50"
+                       min="100" required/>
             </li>
 
-            <li data-input-trigger>
-                <label class="fs-field-label fs-anim-upper" data-info="We'll make sure to use it all over">Select tags.</label>
-                <select class="cs-select cs-skin-boxes fs-anim-lower">
-                    <option value="" disabled selected>Pick a color</option>
-                    <option value="#588c75" data-class="color-588c75">Art</option>
-                    <option value="#b0c47f" data-class="color-b0c47f">Books</option>
-                    <option value="#f3e395" data-class="color-f3e395">Comedy</option>
-                    <option value="#f3ae73" data-class="color-f3ae73">Culture</option>
-                    <option value="#da645a" data-class="color-da645a">Dance</option>
-                    <option value="#79a38f" data-class="color-79a38f">Drama</option>
-                    <option value="#c1d099" data-class="color-c1d099">Education</option>
-                    <option value="#f5eaaa" data-class="color-f5eaaa">Entertainment</option>
-                    <option value="#f5be8f" data-class="color-f5be8f">Fashion</option>
-                    <option value="#e1837b" data-class="color-e1837b">Fitness</option>
-                    <option value="#9bbaab" data-class="color-9bbaab">Food</option>
-                    <option value="#d1dcb2" data-class="color-d1dcb2">Games</option>
-                    <option value="#f9eec0" data-class="color-f9eec0">Life</option>
-                    <option value="#f7cda9" data-class="color-f7cda9">Movie</option>
-                    <option value="#e8a19b" data-class="color-e8a19b">Music</option>
-                    <option value="#bdd1c8" data-class="color-bdd1c8">Photography</option>
-                    <option value="#e1e7cd" data-class="color-e1e7cd">Sci-Fi</option>
-                    <option value="#faf4d4" data-class="color-faf4d4">Show</option>
-                    <option value="#fbdfc9" data-class="color-fbdfc9">Technology</option>
-                    <option value="#f1c1bd" data-class="color-f1c1bd">Travel</option>
-                </select>
+            <li>
+                <label class="fs-field-label fs-anim-upper" for="q5">When would your funding end?</label>
+                <input class="fs-anim-lower" id="q5" name="q5" type="text" placeholder="Format:2017-01-01 13:00:00" required/>
             </li>
+
+            <li>
+                <label class="fs-field-label fs-anim-upper" for="q6">When would your project be completed idealy?</label>
+                <input class="fs-anim-lower" id="q6" name="q6" type="text" placeholder="Format:2017-01-01 13:00:00" required/>
+            </li>
+
 
 
         </ol><!-- /fs-fields -->
         <button class="fs-submit" type="submit">Post Request :)</button>
+
     </form><!-- /fs-form -->
+
+
 </div><!-- /fs-form-wrap -->
+
+
+<?php
+}
+?>
 
 
 

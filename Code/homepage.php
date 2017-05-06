@@ -6,8 +6,17 @@
  * Time: 下午6:20
  */
 session_start();
-include 'connection.php';
-include 'function.php';
+
+require 'connection.php';
+require 'function.php';
+
+
+//require 'loginCheck.php';
+
+
+$loginuser = $_SESSION['loginuser'];
+
+
 ?>
 
 
@@ -20,7 +29,7 @@ include 'function.php';
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
 
-    <title>FunFunFunding</title>
+    <title>Spring Board Funding</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -77,6 +86,15 @@ include 'function.php';
             color: white;
         }
 
+        .user_icon{
+            margin: 0 5px;
+            width: 20px;
+            height: 20px;
+            display: inline;
+            padding: 0;
+            border: 1px solid rgba(0,0,0,0);
+        }
+
     </style>
 
 </head>
@@ -94,7 +112,7 @@ include 'function.php';
                 <span class="icon-bar"></span>
 
             </button>
-            <a class="navbar-brand">FFFunding</a>
+            <a class="navbar-brand">Spring Board</a>
 
         </div>
 
@@ -106,99 +124,150 @@ include 'function.php';
                 <li><a href ="fundrequest.php">Start a project</a></li>
             </ul>
 
-            <form class="navbar-form navbar-right" action="timeline.php" method="post">
 
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Username" name="loginname"/>
-                    </div>
+            <?php
 
-                    <div class="form-group">
-                        <input type="password" class="form-control" placeholder="*****" name="loginpassword"/>
-                    </div>
-                    <input type="submit" class="btn btn-success" name="submit" value="Log in"/>
+            if(isset($loginuser)){
 
-                <button type="button" class ="btn btn-danger" onclick="window.location.href='signup.php'">Sign Up</button>
+                //echo "welcome $loginuser ";
+
+                //echo " <button type=\"button\" class =\"btn btn-danger\" onclick=\"window.location.href='logout.php'\">Bye Bitch</button>";
+
+
+
+                $query0 = $conn->prepare("SELECT Avatar FROM UserProfiles WHERE UID = ?");
+                $query0->bind_param("s", $loginuser);
+                $query0->execute();
+                $query0->bind_result($icon);
+                $query0->fetch();
+                $query0->close();
+
+
+
+
+                echo"
+
+
+            
+            
+            <div class=\"navbar-text navbar-right dropdown\">
+                    <img src=\"$icon\" class = \"thumbnail user_icon\">
+                    
+                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">
+                   $loginuser<span class=\"caret\" ></span></a>
+                    <ul class=\"dropdown-menu\">
+                      <li><a href = \"profile.php?userid=$loginuser\"> My Profile </a></li>
+                      <li><a href = \"editProfile.php\"> Settings</a></li>
+                      <li><a href = \"logout.php\"> Log Out </a></li>
+                  </ul>
+                </div> ";
+
+
+
+            }else{
+
+
+        ?>
+
+        <form class="navbar-form navbar-right" method="POST" action="loginCheck.php">
+
+                <div class="form-group">
+
+                    <input type="text" class="form-control" placeholder="Username" name="loginname">
+
+                    <input type="password" class="form-control" placeholder="*****" name="password">
+
+                    <input type="submit" class="btn btn-success"  value="Log In">
+
+                </div>
+
+            <button type="button" class ="btn btn-danger" onclick="window.location.href='signup.php'">Sign Up</button>
 
             </form>
 
 
 
-        </div>
+        <?php
+        }
+        ?>
+
+
     </div>
+</div>
 </div>
 
 
 
 <!-- Header -->
 <header id="top" class="header">
-    <div class="text-vertical-center" style="color:white">
-        <h1>Fun Fun Funding</h1>
-        <h3>Now it's time for starting your own dream.</h3>
-        <br>
-        <a href="#about" class="btn btn-dark btn-lg">Find Out More</a>
-    </div>
+<div class="text-vertical-center" style="color:white">
+    <h1>Spring Board</h1>
+    <h3>Now it's time for starting your own dream.</h3>
+    <br>
+    <a href="#about" class="btn btn-dark btn-lg">Find Out More</a>
+</div>
 </header>
 
 <!-- About -->
 <section id="about" class="about">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h2>Fun Fun Funding is the perfect place for your next project!</h2>
-                <p class="lead">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <h2>Spring Board is the perfect funding place for your next project!</h2>
+            <p class="lead">
 
-                    <a target="_blank" href="signup.php">Become a menber today</a></p>
-            </div>
+                <a target="_blank" href="signup.php">Become a member today</a></p>
         </div>
-        <!-- /.row -->
     </div>
-    <!-- /.container -->
+    <!-- /.row -->
+</div>
+<!-- /.container -->
 </section>
 
 
 <!-- Callout -->
 <aside class="callout">
-    <div class="text-vertical-center">
+<div class="text-vertical-center">
 
-        <div class="row">
+    <div class="row">
 
-            <h1 class="center title">Explore By Tags</h1>
-            <br/>
+        <h1 class="center title">Explore By Tags</h1>
+        <br/>
 
 
 
-            <div class="center">
+        <div class="center">
 
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Art" role="button">Art</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Books" role="button">Books</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Comedy" role="button">Comedy</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Culture" role="button">Culture</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Dance" role="button">Dance</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Drama" role="button">Drama</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Education" role="button">Education</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Entertainment" role="button">Entertainment</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Fashion" role="button">Fashion</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Fitness" role="button">Fitness</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Food" role="button">Food</a>
-                <br/> <br/>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Games" role="button">Games</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Hiphop" role="button">Hiphop</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Jazz" role="button">Jazz</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Life" role="button">Life</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Movie" role="button">Movie</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Music" role="button">Music</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Mystery" role="button">Mystery</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Photography" role="button">Photography</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Pop" role="button">Pop</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Rock" role="button">Rock</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Sci-Fi" role="button">Sci-Fi</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Show" role="button">Show</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Technology" role="button">Technology</a>
-                <a class="btn btn-success btn-xs" href="tag.php?clicktag=Travel" role="button">Travel</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Art" role="button">Art</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Books" role="button">Books</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Comedy" role="button">Comedy</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Culture" role="button">Culture</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Dance" role="button">Dance</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Drama" role="button">Drama</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Education" role="button">Education</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Entertainment" role="button">Entertainment</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Fashion" role="button">Fashion</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Fitness" role="button">Fitness</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Food" role="button">Food</a>
+            <br/> <br/>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Games" role="button">Games</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Hiphop" role="button">Hiphop</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Jazz" role="button">Jazz</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Life" role="button">Life</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Movie" role="button">Movie</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Music" role="button">Music</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Mystery" role="button">Mystery</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Photography" role="button">Photography</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Pop" role="button">Pop</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Rock" role="button">Rock</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Sci-Fi" role="button">Sci-Fi</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Show" role="button">Show</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Technology" role="button">Technology</a>
+            <a class="btn btn-success btn-xs" href="tag.php?clicktag=Travel" role="button">Travel</a>
 
-            </div>
         </div>
     </div>
+</div>
 </aside>
 
 
@@ -206,148 +275,148 @@ include 'function.php';
 
 <!-- Portfolio -->
 <section id="portfolio" class="portfolio">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-10 col-lg-offset-1 text-center">
-                <h2>Trending Projects</h2>
-                <p class="lead center">Explore the fantastic ideas with the most sponsorships.</p>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10 col-lg-offset-1 text-center">
+            <h2>Trending Projects</h2>
+            <p class="lead center">Explore the fantastic ideas with the most sponsorships.</p>
 
 
-                <hr class="small">
+            <hr class="small">
 
-                <div class="row">
+            <div class="row">
 
-                    <div class="col-md-6">
-                        <div class="portfolio-item">
-                            <a href="">
-                                <img class="img-portfolio img-responsive" src="images/portfolio-1.jpg">
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="portfolio-item">
-                            <a href="">
-                                <img class="img-portfolio img-responsive" src="images/portfolio-2.jpg">
-                            </a>
-                        </div>
+                <div class="col-md-6">
+                    <div class="portfolio-item">
+                        <a href="">
+                            <img class="img-portfolio img-responsive" src="images/portfolio-1.jpg">
+                        </a>
                     </div>
                 </div>
 
+                <div class="col-md-6">
+                    <div class="portfolio-item">
+                        <a href="">
+                            <img class="img-portfolio img-responsive" src="images/portfolio-2.jpg">
+                        </a>
+                    </div>
+                </div>
+            </div>
 
 
 
-                <div class="row marginBottom">
+
+            <div class="row marginBottom">
+
+
+                <?php
+                $i=0;
+                $j=0;
+                ?>
+
+                <div class="col-md-4 marginTop">
+
+
+
+
+                    <h2><span class="glyphicon glyphicon-music"></span>
+                        <?php
+                        $pnameforp = "";
+
+                        $res = TrendingProjName($conn,$i);
+                        while($row = mysqli_fetch_array($res)) {
+                            echo $row['ProjName'];
+                            $pnameforp = $row['ProjName'];
+                            $i++;
+                        }
+                        ?></h2>
+
+                    <?php
+
+                    $res = TrendingProjDescription($conn,$j);
+                    while($row = mysqli_fetch_array($res)) {
+                        echo $row['Description'];
+                        $j++;
+                    }
+                    ?>
+                    <br/><br/>
 
 
                     <?php
-                    $i=0;
-                    $j=0;
+
+                    echo "<a href='project.php?projectname=$pnameforp'><button class='btn btn-success marginTop'>Check it out!</button></a>";
+
                     ?>
 
-                    <div class="col-md-4 marginTop">
+                </div>
 
+                <div class="col-md-4 marginTop">
 
-
-
-                        <h2><span class="glyphicon glyphicon-music"></span>
-                            <?php
-                            $pnameforp = "";
-
-                            $res = TrendingProjName($conn,$i);
-                            while($row = mysqli_fetch_array($res)) {
-                                echo $row['ProjName'];
-                                $pnameforp = $row['ProjName'];
-                                $i++;
-                            }
-                            ?></h2>
-
+                    <h2><span class="glyphicon glyphicon-star"></span>
                         <?php
 
-                        $res = TrendingProjDescription($conn,$j);
+                        $pnameforp = "";
+
+                        $res = TrendingProjName($conn,$i);
                         while($row = mysqli_fetch_array($res)) {
-                            echo $row['Description'];
-                            $j++;
+                            echo $row['ProjName'];
+                            $pnameforp = $row['ProjName'];
+                            $i++;
                         }
-                        ?>
-                        <br/><br/>
+                        ?></h2>
+
+                    <?php
+
+                    $res = TrendingProjDescription($conn,$j);
+                    while($row = mysqli_fetch_array($res)) {
+                        echo $row['Description'];
+                        $j++;
+                    }
+                    ?>
+                    <br/><br/>
+
+                    <?php
+
+                    echo "<a href='project.php?projectname=$pnameforp'><button class='btn btn-success marginTop'>Check it out!</button></a>";
+
+                    ?>
+
+                </div>
+
+                <div class="col-md-4 marginTop">
 
 
+                    <h2><span class="glyphicon glyphicon-heart"></span>
                         <?php
 
-                        echo "<a href='project.php?projectname=$pnameforp'><button class='btn btn-success marginTop'>Check it out!</button></a>";
+                        $pnameforp = "";
 
-                        ?>
-
-                    </div>
-
-                    <div class="col-md-4 marginTop">
-
-                        <h2><span class="glyphicon glyphicon-star"></span>
-                            <?php
-
-                            $pnameforp = "";
-
-                            $res = TrendingProjName($conn,$i);
-                            while($row = mysqli_fetch_array($res)) {
-                                echo $row['ProjName'];
-                                $pnameforp = $row['ProjName'];
-                                $i++;
-                            }
-                            ?></h2>
-
-                        <?php
-
-                        $res = TrendingProjDescription($conn,$j);
+                        $res = TrendingProjName($conn,$i);
                         while($row = mysqli_fetch_array($res)) {
-                            echo $row['Description'];
-                            $j++;
+                            echo $row['ProjName'];
+                            $pnameforp = $row['ProjName'];
+                            $i++;
                         }
-                        ?>
-                        <br/><br/>
-
-                        <?php
-
-                        echo "<a href='project.php?projectname=$pnameforp'><button class='btn btn-success marginTop'>Check it out!</button></a>";
-
-                        ?>
-
-                    </div>
-
-                    <div class="col-md-4 marginTop">
 
 
-                        <h2><span class="glyphicon glyphicon-heart"></span>
-                            <?php
+                        ?></h2>
 
-                            $pnameforp = "";
+                    <?php
 
-                            $res = TrendingProjName($conn,$i);
-                            while($row = mysqli_fetch_array($res)) {
-                                echo $row['ProjName'];
-                                $pnameforp = $row['ProjName'];
-                                $i++;
-                            }
-
-
-                            ?></h2>
-
-                        <?php
-
-                        $res = TrendingProjDescription($conn,$j);
-                        while($row = mysqli_fetch_array($res)) {
-                            echo $row['Description'];
-                            $j++;
-                        }
-                        ?>
-                        <br/><br/>
+                    $res = TrendingProjDescription($conn,$j);
+                    while($row = mysqli_fetch_array($res)) {
+                        echo $row['Description'];
+                        $j++;
+                    }
+                    ?>
+                    <br/><br/>
 
 
-                        <?php
-                        /*<button class="btn btn-success marginTop"><a  href="project.php?projectname=$pnameforp">Check it out!</a></button>
-                            <button  onclick="window.location.href='project.php?projectname=$pnameforp'"
-                                         class="btn btn-success marginTop">Check it out!</button>
-                            */
+                    <?php
+                    /*<button class="btn btn-success marginTop"><a  href="project.php?projectname=$pnameforp">Check it out!</a></button>
+                        <button  onclick="window.location.href='project.php?projectname=$pnameforp'"
+                                     class="btn btn-success marginTop">Check it out!</button>
+                        */
                         echo "<a href='project.php?projectname=$pnameforp'><button class='btn btn-success marginTop'>Check it out!</button></a>";
 
 

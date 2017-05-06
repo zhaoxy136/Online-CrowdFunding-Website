@@ -5,9 +5,11 @@
  * Date: 2017/4/27
  * Time: 下午2:12
  */
+session_start();
+require 'connection.php';
+require 'function.php';
 
-include 'connection.php';
-include 'function.php';
+$loginuser = $_SESSION['loginuser'];
 ?>
 
 
@@ -30,15 +32,10 @@ include 'function.php';
     <link href="css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
     <script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
     <script src="js/star-rating.min.js" type="text/javascript"></script>
+    <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
 
 
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
     <style>
 
@@ -190,7 +187,7 @@ include 'function.php';
                 <span class="icon-bar"></span>
 
             </button>
-            <a class="navbar-brand">FFFunding</a>
+            <a class="navbar-brand">Spring Board</a>
 
         </div>
 
@@ -202,20 +199,55 @@ include 'function.php';
                 <li><a href ="fundrequest.php">Start a project</a></li>
             </ul>
 
-            <form class="navbar-form navbar-right" action="timeline.php" method="post">
+            <?php
 
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Username" name="loginname"/>
-                </div>
+            if(isset($loginuser)){
 
-                <div class="form-group">
-                    <input type="password" class="form-control" placeholder="*****" name="loginpassword"/>
-                </div>
-                <input type="submit" class="btn btn-success" name="submit" value="Log in"/>
+                //echo "welcome $loginuser ";
 
-                <button type="button" class ="btn btn-danger" onclick="window.location.href='signup.php'">Sign Up</button>
+                //echo " <button type=\"button\" class =\"btn btn-danger\" onclick=\"window.location.href='logout.php'\">Bye Bitch</button>";
 
-            </form>
+                echo"
+
+            
+            <div class=\"navbar-text navbar-right dropdown\">
+                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">
+                   $loginuser<span class=\"caret\" ></span></a>
+                    <ul class=\"dropdown-menu\">
+                      <li><a href = \"profile.php?userid=$loginuser\"> My Profile </a></li>
+                      <li><a href = \"editProfile.php\"> Settings</a></li>
+                      <li><a href = \"logout.php\"> Log Out </a></li>
+                  </ul>
+                </div> ";
+
+
+
+            }else{
+
+
+                ?>
+
+                <form class="navbar-form navbar-right" method="POST" action="loginCheck.php">
+
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" placeholder="Username" name="loginname">
+
+                        <input type="password" class="form-control" placeholder="*****" name="password">
+
+                        <input type="submit" class="btn btn-success"  value="Log In">
+
+                    </div>
+
+                    <button type="button" class ="btn btn-danger" onclick="window.location.href='signup.php'">Sign Up</button>
+
+                </form>
+
+
+
+                <?php
+            }
+            ?>
 
 
 
@@ -259,7 +291,7 @@ include 'function.php';
          // echo "<div><h2 class=\"center\">".$description. "</h2></div>";
         $query1 = $conn->prepare("SELECT * FROM UserProfiles WHERE UID='$ownerid'");
         $query1 -> execute();
-        $query1 -> bind_result($uid,$firstname,$lastname,$gender,$city,$state,$cellphone,
+        $query1 -> bind_result($uid,$firstname,$lastname,$avatar,$gender,$city,$state,$cellphone,
                     $emailaddress, $creditcardnumber, $interests);
         $query1->fetch();
 
@@ -269,9 +301,14 @@ include 'function.php';
         ?>
 
 
+        <div><span class="glyphicon glyphicon-thumbs-up"></span></div>
+
+
     </div>
 
 </div>
+
+
 
 <div class="container contentContainer" id="midContainer">
     <hr>
@@ -329,46 +366,96 @@ include 'function.php';
 
     <hr>
 
+
+
+
+
     <div class="center">
 
-        <a class="btn btn-success btn-lg" href="pledgepage.php" role="button">SPONSOR IT!</a>
-        <br/><br/>
+        <?php
+
+        $query6 = $conn->prepare(
+                    "SELECT Tag
+                    FROM Projects natural join Label l
+                    WHERE l.ProjID = '$projid'");
+        $query6 -> execute();
+        $query6 -> bind_result($tag);
+
+        echo " Tags: ";
+        while($query6 -> fetch()){
+            echo "<td><a href ='tag.php?clicktag=$tag'>$tag</a>  </td>\n";
+        }
+
+
+
+        $query6->close();
+
+        ?>
+
+
+        <hr>
+
+
+        <br/>
 
     </div>
 
 
+    <div class="center">
 
+        <a class="btn btn-success btn-lg" data-toggle ="modal" data-target="#pledgeModal" role="button">SPONSOR IT!</a>
+        <br/><br/>
+
+    </div>
+
+    <div class="modal" id="pledgeModal">
+
+        <div class ="modal-dialog modal-sm">
+
+            <div class ="modal-content">
+
+                <div class="modal-header">
+
+                    <button class="close" data-dismiss="modal">x</button>
+
+                    <h4 class="modal-title">Make a Pledge</h4>
+
+                </div>
+
+
+                <form role ="form" class="form-inline" action="pledgepage.php" method="post">
+                <div class ="modal-body">
+
+                    <div class="row">
+
+                        <div class="col-md-12 marginTop">
+                            <p class="form-group marginmiddle">
+
+                                <span class="glyphicon glyphicon-usd"></span>
+                                    <input class="form-control" type="number" placeholder="Amount" step="50" min="500"/>
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class ="modal-footer">
+
+                    <button class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-success">Sponsor</button>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
 
 
 
 
     <?php
 
-    $query2 = $conn->prepare("SELECT * FROM StageUpdate WHERE ProjID='$projid' order by UpdateTime DESC ");
-    $query2 -> execute();
-    $query2 -> bind_result($uploader, $currentproj, $mid, $updatetime);
-    $query2->fetch();
-    $query2->close();
-
-
-    $query3 = $conn->prepare("SELECT * FROM Attach WHERE ProjID='$projid' ");
-    $query3 -> execute();
-    $query3 -> bind_result($sampleid, $sampletime);
-    $query3->fetch();
-    $query3->close();
-
-
-    $query22 = $conn->prepare("SELECT MPath FROM Materials WHERE MID='$mid' ");
-    $query22 -> execute();
-    $query22 -> bind_result($mpath);
-    $query22->fetch();
-    $query22->close();
-
-    $query33 = $conn->prepare("SELECT MPath FROM Materials WHERE MID='$sampleid' ");
-    $query33 -> execute();
-    $query33 -> bind_result($samplepath);
-    $query33->fetch();
-    $query33->close();
 
     $query4 = $conn->prepare("SELECT * FROM Comments WHERE ProjID='$projid' order by CommentTime DESC ");
     $query4 -> execute();
@@ -404,17 +491,99 @@ include 'function.php';
                             <div role="tabpanel" class="tab-pane fade in active" id="Section1">
 
 
-                                <h3><?php echo $mid; ?></h3>
 
-                                <p><a href="<?php echo $mpath; ?>" class="img-responsive center-block"><img src="<?php echo $mpath; ?>" alt=""/></a></p>
-                                <h5><?php  echo $updatetime; ?></h5>
+
+
+                                <h4>Updates:</h4><br/>
+
+
+                                <?php
+
+
+                                $query2 = $conn->prepare("SELECT MID, MDescription, MPath, UpdateTime
+                                                                FROM StageUpdate natural join Materials
+                                                                WHERE ProjID='$projid' order by UpdateTime DESC ");
+                                $query2 ->execute();
+                                $query2 ->bind_result($updateid, $updatedescription, $updatepath, $updatetime);
+
+
+
+
+                                while ($query2->fetch()){
+
+
+
+
+                                    echo "<h4>$updateid</h4>
+                                            <h4>$updatetime</h4>
+                                            <h3>$updatedescription</h3><br/>
+                                            <p><a href=\" $updatepath\" class=\"center-block\"><img src=\" $updatepath\" class=\"img-responsive\" /></a></p>";
+
+                                    echo "<br/>";
+
+                                }
+
+
+                                if(!$updateid){
+                                    echo "The project has no updates yet. <br/>";
+                                }else {
+                                }
+
+
+                                $query2->close();
+
+
+
+
+                                if($loginuser == $ownerid){
+
+                                    echo "<a href='update.php?projectid=$projid&projectname=$projname'><button class='btn btn-success marginTop'>Update Your Project</button></a>";
+                                }
+
+
+                                ?>
+
 
                                 <hr>
 
-                                <h4>Samples:</h4>
-                                <h3><?php echo $sampleid; ?></h3>
 
-                                <p><a href="<?php echo $samplepath; ?>" class="img-responsive center-block"><img src="<?php echo $samplepath; ?>" alt=""/></a></p>
+                                <h4>Samples:</h4><br/>
+
+                                <?php
+
+
+                                $query3 = $conn->prepare("SELECT MID, MDescription, MPath
+                                                                FROM Attach natural join Materials
+                                                                WHERE ProjID='$projid' ");
+                                $query3 ->execute();
+                                $query3 ->bind_result($sampleid, $sampledescription, $samplepath);
+
+
+
+                                while ($query3->fetch()){
+
+                                    echo "<h4>$sampleid</h4>
+                                            <h3>$sampledescription</h3><br/>
+                                            <p><a href=\" $samplepath\" class=\"center-block\"><img src=\" $samplepath\" class=\"img-responsive\" /></a></p>";
+
+                                    echo "<br/>";
+
+                                    }
+
+                                if(!$sampleid){
+                                    echo "The owner didn't upload samples. ";
+                                }
+
+
+                                $query3->close();
+
+
+
+                                ?>
+
+
+
+
 
                             </div>
 
@@ -427,7 +596,8 @@ include 'function.php';
                                 <br/>
 
 
-                                <button class ="btn btn-success" data-toggle ="modal" data-target="#commentModal">
+
+                                <button class="btn btn-success" data-toggle ="modal" data-target="#commentModal">
                                     Make a comment
                                 </button>
 
@@ -453,18 +623,30 @@ include 'function.php';
                                                     <div class="col-md-12 marginTop">
                                                         <p class="form-group marginmiddle">
 
-                                                            <textarea class="form-control"  rows="8" placeholder="Tell the owner what you think..."></textarea>
+                                                            <textarea name="commentcontent"  class="form-control"  rows="8" placeholder="Tell the owner what you think..."></textarea>
 
                                                     </div>
                                                 </div>
 
                                             </div>
+                                            <form method="post">
 
                                             <div class ="modal-footer">
 
                                                 <button class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button class="btn btn-success">Post comment :)</button>
+                                                <button type="submit" class="btn btn-success">Post comment :)</button>
                                             </div>
+                                            </form>
+
+
+
+
+                                            <?php
+
+
+
+
+                                            ?>
 
 
                                         </div>
@@ -508,7 +690,7 @@ include 'function.php';
                                                 Rate from 0 to 5 stars.
 
                                                 <br/>
-                                                <input id="input-21e" value="0" type="number" class="rating" min=0 max=5 step=0.5 data-size="xs">
+                                                <input id="input-21e" value="0" type="number" class="rating" min=0 max=5 step=1 data-size="xs">
                                                 <br/>
 
                                                 <div class="row">
@@ -572,6 +754,7 @@ include 'function.php';
         $(".rating-kv").rating();
 
     });
+
 
 
 

@@ -6,10 +6,13 @@
  * Time: 下午1:05
  */
 
-include 'connection.php';
-include 'function.php';
+session_start();
+
+require 'connection.php';
+require 'function.php';
 
 
+$loginuser = $_SESSION['loginuser'];
 
 $clicktag = $_GET["clicktag"];
 
@@ -96,7 +99,7 @@ $clicktag = $_GET["clicktag"];
                 <span class="icon-bar"></span>
 
             </button>
-            <a class="navbar-brand">FFFunding</a>
+            <a class="navbar-brand">Spring Board</a>
 
         </div>
 
@@ -108,20 +111,57 @@ $clicktag = $_GET["clicktag"];
                 <li><a href ="fundrequest.php">Start a project</a></li>
             </ul>
 
-            <form class="navbar-form navbar-right" action="timeline.php" method="post">
+            <?php
 
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Username" name="loginname"/>
-                </div>
+            if(isset($loginuser)){
 
-                <div class="form-group">
-                    <input type="password" class="form-control" placeholder="*****" name="loginpassword"/>
-                </div>
-                <input type="submit" class="btn btn-success" name="submit" value="Log in"/>
+                //echo "welcome $loginuser ";
 
-                <button type="button" class ="btn btn-danger" onclick="window.location.href='signup.php'">Sign Up</button>
+                //echo " <button type=\"button\" class =\"btn btn-danger\" onclick=\"window.location.href='logout.php'\">Bye Bitch</button>";
 
-            </form>
+                echo"
+
+
+            
+            
+            <div class=\"navbar-text navbar-right dropdown\">
+                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">
+                   $loginuser<span class=\"caret\" ></span></a>
+                    <ul class=\"dropdown-menu\">
+                      <li><a href = \"profile.php?userid=$loginuser\"> My Profile </a></li>
+                      <li><a href = \"editProfile.php\"> Settings</a></li>
+                      <li><a href = \"logout.php\"> Log Out </a></li>
+                  </ul>
+                </div> ";
+
+
+
+            }else{
+
+
+                ?>
+
+                <form class="navbar-form navbar-right" method="POST" action="loginCheck.php">
+
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" placeholder="Username" name="loginname">
+
+                        <input type="password" class="form-control" placeholder="*****" name="password">
+
+                        <input type="submit" class="btn btn-success"  value="Log In">
+
+                    </div>
+
+                    <button type="button" class ="btn btn-danger" onclick="window.location.href='signup.php'">Sign Up</button>
+
+                </form>
+
+
+
+                <?php
+            }
+            ?>
 
 
 
@@ -142,7 +182,7 @@ $clicktag = $_GET["clicktag"];
             "SELECT p.ProjID, ProjName, PostTime
                     FROM Projects p natural join Label
                     WHERE tag = '$clicktag'
-                    Order by PostTime desc;");
+                    Order by PostTime desc");
         $query1 -> execute();
         $query1 -> bind_result($projid,$projname,$posttime);
 
@@ -302,3 +342,4 @@ $clicktag = $_GET["clicktag"];
 
 
 </body>
+</html>

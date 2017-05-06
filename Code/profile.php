@@ -6,8 +6,11 @@
  * Time: 下午2:08
  */
 session_start();
-include 'connection.php';
-include 'function.php';
+
+require 'connection.php';
+require 'function.php';
+
+$loginuser = $_SESSION['loginuser'];
 
 $uidforp = $_GET["userid"];
 
@@ -16,10 +19,14 @@ $query0 = $conn->prepare(
             FROM UserProfiles
             WHERE UID = '$uidforp'");
 $query0 -> execute();
-$query0 -> bind_result($puid,$pfirstname,$plastname,$pgender,$pcity,$pstate,$pcellphone,
+$query0 -> bind_result($puid,$pfirstname,$plastname,$icon,$pgender,$pcity,$pstate,$pcellphone,
     $pemailaddress, $pcreditcardnumber, $pinterests);
 $query0->fetch();
 
+if (!isset($loginuser)) {
+    echo "<script>alert('Please Log in First!')</script>";
+    echo "<script>location.href='homepage.php'</script>";
+}
 
 
 ?>
@@ -80,6 +87,17 @@ $query0->fetch();
                 background:url("images/hometagbackground.jpg") center;
                 color: white;
             }
+            img {
+                border-radius: 50%;
+                border: 0;
+                display: block;
+                min-width: 90px;
+                min-height: 90px;
+                max-width:90px;
+                max-height:90px;
+                width: auto;
+                height: auto;
+            }
 
         </style>
 
@@ -101,7 +119,7 @@ $query0->fetch();
                     <span class="icon-bar"></span>
 
                 </button>
-                <a class="navbar-brand">FFFunding</a>
+                <a class="navbar-brand">Spring Board</a>
 
             </div>
 
@@ -112,6 +130,59 @@ $query0->fetch();
                     <li><a href="explore.php">Explore</a></li>
                     <li><a href ="fundrequest.php">Start a project</a></li>
                 </ul>
+
+
+                <?php
+
+                if(isset($loginuser)){
+
+                    //echo "welcome $loginuser ";
+
+                    //echo " <button type=\"button\" class =\"btn btn-danger\" onclick=\"window.location.href='logout.php'\">Bye Bitch</button>";
+
+                    echo"
+
+
+            
+            
+            <div class=\"navbar-text navbar-right dropdown\">
+                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">
+                   $loginuser<span class=\"caret\" ></span></a>
+                    <ul class=\"dropdown-menu\">
+                      <li><a href = \"profile.php?userid=$loginuser\"> My Profile </a></li>
+                      <li><a href = \"editProfile.php\"> Settings</a></li>
+                      <li><a href = \"logout.php\"> Log Out </a></li>
+                  </ul>
+                </div> ";
+
+
+
+                }else{
+
+
+                    ?>
+
+                    <form class="navbar-form navbar-right" method="POST" action="loginCheck.php">
+
+                        <div class="form-group">
+
+                            <input type="text" class="form-control" placeholder="Username" name="loginname">
+
+                            <input type="password" class="form-control" placeholder="*****" name="password">
+
+                            <input type="submit" class="btn btn-success"  value="Log In">
+
+                        </div>
+
+                        <button type="button" class ="btn btn-danger" onclick="window.location.href='signup.php'">Sign Up</button>
+
+                    </form>
+
+
+
+                    <?php
+                }
+                ?>
 
 
 
@@ -130,7 +201,8 @@ $query0->fetch();
 		<!-- Header -->
 			<header id="header">
 				<div class="inner">
-					<a href="#" class="image avatar"><img src="images/avatar.jpg" alt="" /></a>
+
+                    <a href="#" class="image avatar"><img src="<?php echo $icon;?>" onerror="this.src='images/defaulticon.jpg';" /></a>
 
                     <?php
                             echo "<h1><strong>$pfirstname $plastname</strong></h1><br/><br/>";
@@ -171,7 +243,7 @@ $query0->fetch();
                     $query12 -> bind_result($followernum);
                     $query12->fetch();
 
-                    echo "Follower: $followernum";
+                    echo "Followers: $followernum";
 
 
                     $query12->close();
@@ -287,7 +359,7 @@ $query0->fetch();
 
 
 
-
+                </section>
 
 			</div>
 
@@ -306,7 +378,7 @@ $query0->fetch();
 				<div class="inner">
 
 					<ul class="copyright">
-						<li>&copy;Fun Fun Funding</li>
+						<li>&copy;Spring Board Funding</li>
 					</ul>
 				</div>
 			</footer>
