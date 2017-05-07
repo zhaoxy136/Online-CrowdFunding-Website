@@ -95,11 +95,10 @@
 
   <?php
 
-    $query0 = $conn->prepare("SELECT UID, ProjName, HappenTime, ActiType FROM Following natural join Activities WHERE FollowerID = '$loginuser' ORDER BY HappenTime DESC");
+    $query0 = $conn->prepare("SELECT UID, ProjName, HappenTime, ActiContent, ActiType FROM Following natural join Activities WHERE FollowerID = '$loginuser' ORDER BY HappenTime DESC");
     $query0->execute();
-    $query0->bind_result($id, $proj, $happen, $type);
+    $query0->bind_result($id, $proj, $happen, $detail, $type);
     $i = 0;
-    $detail = "";
     ?>
 
   <div class="timeline">
@@ -107,7 +106,7 @@
     <?php
     while ($query0->fetch()) {
     //while ($i < 8) {
-      $detial = "xixi";
+      //$detail = "xixi";
       ?>
       <div class="timeline__item timeline__item--<?php echo $i;?>">
         <div class="timeline__item__station"></div>
@@ -118,22 +117,9 @@
           posted a new project: 
           <?php } elseif ($type == "like") { ?>
           liked project:
-          <?php } elseif ($type == "review") { 
-            /*$subquery0 = $conn->prepare("SELECT UserReview FROM Reviews WHERE UID = $id AND ProjID = $proj");
-            $subquery0->execute();
-            $subquery0->bind_result($detail);
-            $subquery0->close();*/
-            ?>
+          <?php } elseif ($type == "review") { ?>
           reviewd a completed project:
-          <?php } elseif ($type == "comment") { 
-            /*$subquery1 = $conn->prepare("SELECT UserComment FROM Comments WHERE UID = $id AND ProjID = $proj AND CommentTime = $happen");
-            $subquery1->execute();
-            $subquery1->bind_result($detail);
-
-                $subquery1->fetch();*/
-
-            
-            ?>
+          <?php } elseif ($type == "comment") { ?>
           posted a comment on:
           <?php } elseif ($type == "update") { ?>
           had some new updates for 
@@ -147,19 +133,10 @@
           <strong><em><?php echo $proj;?></em></strong></p>
           <div class="timeline__item__content__detail">
             <?php
-              /*if ($type == "comment" || $type == "review") {
-                $subquery1 = $conn->prepare("SELECT UserComment FROM Comments WHERE UID = $id AND ProjID = $proj AND CommentTime = $happen");
-                $subquery1->execute();
-            $subquery1->bind_result($detail);
-
-                $subquery1->fetch();
-            //$subquery1->close();
-                echo $detail;
-                $subquery1->close();
-              } */
-              echo $detail;
+              if ($type == "post" || $type == "comment" || $type == "review" || $type == "ongoing" || $type == "complete") {
+                  echo '"' .$detail .'"';
+              }
             ?>
-            "haha hahha post lol lol lol lol hei hei hei
           </div>
         </div>
       </div>
