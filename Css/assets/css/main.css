@@ -1,5 +1,4 @@
-@import url("font-awesome.min.css");
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic");
+@import url('https://fonts.googleapis.com/css?family=Nunito:300,400,700');
 
 /*
 	Strata by HTML5 UP
@@ -1105,27 +1104,15 @@
 
 	body, input, select, textarea {
 		color: #a2a2a2;
-		font-family: "Source Sans Pro", Helvetica, sans-serif;
+		font-family: 'Nunito', sans-serif;
 		font-size: 16pt;
 		font-weight: 400;
 		line-height: 1.75em;
 	}
 
 	a {
-		-moz-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-		-webkit-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-		-ms-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-		transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-		border-bottom: dotted 1px;
-		color: #49bf9d;
-		text-decoration: none;
+  		background-color: transparent;
 	}
-
-		a:hover {
-			border-bottom-color: transparent;
-			color: #49bf9d !important;
-			text-decoration: none;
-		}
 
 	strong, b {
 		color: #787878;
@@ -1215,7 +1202,6 @@
 		background: #f7f7f7;
 		border-radius: 0.35em;
 		border: solid 2px #efefef;
-		font-family: "Courier New", monospace;
 		font-size: 0.9em;
 		margin: 0 0.25em;
 		padding: 0.25em 0.65em;
@@ -1223,7 +1209,6 @@
 
 	pre {
 		-webkit-overflow-scrolling: touch;
-		font-family: "Courier New", monospace;
 		font-size: 0.9em;
 		margin: 0 0 2em 0;
 	}
@@ -1342,7 +1327,6 @@
 		.select-wrapper:before {
 			-moz-osx-font-smoothing: grayscale;
 			-webkit-font-smoothing: antialiased;
-			font-family: FontAwesome;
 			font-style: normal;
 			font-weight: normal;
 			text-transform: none !important;
@@ -1408,7 +1392,6 @@
 			input[type="radio"] + label:before {
 				-moz-osx-font-smoothing: grayscale;
 				-webkit-font-smoothing: antialiased;
-				font-family: FontAwesome;
 				font-style: normal;
 				font-weight: normal;
 				text-transform: none !important;
@@ -1508,7 +1491,6 @@
 		.icon:before {
 			-moz-osx-font-smoothing: grayscale;
 			-webkit-font-smoothing: antialiased;
-			font-family: FontAwesome;
 			font-style: normal;
 			font-weight: normal;
 			text-transform: none !important;
@@ -1522,9 +1504,12 @@
 
 	.image {
 		border-radius: 0.35em;
-		border: 0;
+		border: 0px;
 		display: inline-block;
 		position: relative;
+		overflow: hidden;
+		width: 90px;
+		height: 90px;
 	}
 
 		.image:before {
@@ -1581,10 +1566,6 @@
 				opacity: 1.0;
 			}
 
-		.image img {
-			border-radius: 0.35em;
-			display: block;
-		}
 
 		.image.left {
 			float: left;
@@ -2224,7 +2205,6 @@
 			.poptrox-popup .loader:before {
 				-moz-osx-font-smoothing: grayscale;
 				-webkit-font-smoothing: antialiased;
-				font-family: FontAwesome;
 				font-style: normal;
 				font-weight: normal;
 				text-transform: none !important;
@@ -2269,7 +2249,6 @@
 			.poptrox-popup .nav-previous:before {
 				-moz-osx-font-smoothing: grayscale;
 				-webkit-font-smoothing: antialiased;
-				font-family: FontAwesome;
 				font-style: normal;
 				font-weight: normal;
 				text-transform: none !important;
@@ -2328,7 +2307,6 @@
 			.poptrox-popup .closer:before {
 				-moz-osx-font-smoothing: grayscale;
 				-webkit-font-smoothing: antialiased;
-				font-family: FontAwesome;
 				font-style: normal;
 				font-weight: normal;
 				text-transform: none !important;
