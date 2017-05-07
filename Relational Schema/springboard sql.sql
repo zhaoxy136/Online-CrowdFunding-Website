@@ -276,12 +276,6 @@ do
         where Projects.Status = 'Funding' and Projects.FundingEndtime <= now() and Projects.AlreadyFund >= Projects.MinFundValue;
 end$$
 
-drop event if exists `Justfortest`$$
-create event `Justfortest` 
-on schedule every 1 minute
-do begin
-		update `Projects` set Projects.AlreadyFund = '100' where Projects.ProjID = '86103';
-end$$
 
 delimiter ;
 
