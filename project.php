@@ -23,6 +23,7 @@ require 'function.php';
     $getproj->bind_result($pid);
     $getproj->fetch();
     $getproj->close();
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['like'])) {
             $subquery11 = $conn->prepare("INSERT INTO Likes (UID, ProjID) VALUES ('$loginuser', '$pid')");
@@ -722,6 +723,7 @@ require 'function.php';
                             $query5 -> execute();
                             $query5 -> bind_result($rateby, $rateproj, $ratingstar, $ratetime, $reviewcontent);
 
+
                             while ($query5->fetch()){
 
                                 echo "<h3>$rateby</h3>
@@ -743,39 +745,59 @@ require 'function.php';
                             $query5 -> close();
 
 
+                            $query50 = $conn->prepare("SELECT Rating FROM Reviews WHERE ProjID='$projid' AND UID = '$loginuser' ");
+                            $query50 -> execute();
+                            $query50 -> bind_result($xixi);
+                            $query50 ->fetch();
+                            $query50 ->close();
+
+
+
 
                             if($status == 'Completed'){
 
-                                $query55 = $conn->prepare("SELECT UID FROM Pledges WHERE ProjID='$projid' AND UID = '$loginuser'");
+                                $query55 = $conn->prepare("SELECT UID 
+                                                                FROM Pledges 
+                                                                WHERE ProjID='$projid' AND UID = '$loginuser' ");
                                 $query55 -> execute();
                                 $query55 -> bind_result($sponsors);
 
 
-                                if ($query55->fetch()){
+                                if ($query55->fetch()) {
 
-                                ?>
+                                    ?>
 
-                                <br/>
+                                    <br/>
 
-                                <?php 
-                                if (!isset($loginuser)) { ?>
-                                <p style="color: #226837; font-size: 18px; font-weight: 500;">Please Login First to make a review.</p>
-                                <?php
-                                } else {
-                                ?>
-                                <button class ="btn btn-success" data-toggle ="modal" data-target="#reviewModal">
-                                    Rate this project
-                                </button>
+                                    <?php
+                                    if (!isset($loginuser)) { ?>
+                                        <p style="color: #226837; font-size: 18px; font-weight: 500;">Please Login First
+                                            to make a review.</p>
 
-                                <?php
+                                        <?php
+                                    } else {
+
+                                        if (isset($xixi)) {
+
+                                            echo "You have already reviewed it. <br/>";
+                                        } else {
+                                            ?>
+                                            <button class="btn btn-success" data-toggle="modal"
+                                                    data-target="#reviewModal">
+                                                Rate this project
+                                            </button>
+
+                                            <?php
+
+                                        }
                                     }
-                                } else {
+                                }else {
                                     echo "Review function only open to sponsors. <br/>";
 
                                 }
+
                                 $query55 -> close();
-
-
+                                
                             }else{
 
                                 echo "Review function only open when the project is completed. <br/>";
