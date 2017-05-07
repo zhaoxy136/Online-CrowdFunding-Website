@@ -32,7 +32,7 @@ $query0->close();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Start a project</title>
+    <title>Complete Request</title>
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -84,7 +84,18 @@ $query0->close();
         #sampleupload{
             margin-left: auto;
             margin-right:auto;
+
         }
+
+        .tarea{
+           color: black;
+            border:3px double green;
+            width:300px;
+            overflow-y:visible
+        }
+
+
+
     </style>
 </head>
 
@@ -144,63 +155,81 @@ $query0->close();
 
 <div class="completerequest" ">
 
-        <div class="row">
-            <h1 >One more step...</h1>
+        <div class="row" style="color: lavenderblush;font-family: Chalkduster">
+            <h1>One More Step...</h1>
             <br>
+
+
         </div>
 
         <div class="container blockmargin">
-            <div class="col-md-6 col-md-offset-3 text-center">
+            <div class="col-md-12  text-center">
 
                 <form method="post" action="" enctype="multipart/form-data">
                 <div class="form-group form-margin">
+                    <hr>
 
-                    <div class = "row">
-                    <label class="control-label"><h3>Select Tags for your project：</h3></label>
+                    <label class="control-label" style=""><h3>Select Tags for your project：</h3></label>
+                    <div class = "row" style="font-family:Chalkduster;font-size: xx-large">
                     <br><br/>
-                        <input type="checkbox" name="tags[]" value="Art"><label> Art </label>
-                        <input type="checkbox" name="tags[]" value="Books"><label> Books </label>
-                        <input type="checkbox" name="tags[]" value="Comedy"><label> Comedy </label>
-                        <input type="checkbox" name="tags[]" value="Culture"><label> Culture </label>
-                        <input type="checkbox" name="tags[]" value="Dance"><label> Dance </label>
-                    <br>
-                        <input type="checkbox" name="tags[]" value="Drama"><label> Drama </label>
-                        <input type="checkbox" name="tags[]" value="Education"><label> Education </label>
-                        <input type="checkbox" name="tags[]" value="Entertainment"><label> Entertainment </label>
-                        <input type="checkbox" name="tags[]" value="Fashion"><label> Fashion </label>
-                    <br>
-                        <input type="checkbox" name="tags[]" value="Fitness"><label> Fitness </label>
-                        <input type="checkbox" name="tags[]" value="Food"><label> Food </label>
-                        <input type="checkbox" name="tags[]" value="Games"><label> Games </label>
-                        <input type="checkbox" name="tags[]" value="Hiphop"><label> Hiphop </label>
-                        <input type="checkbox" name="tags[]" value="Jazz"><label> Jazz </label>
-                        <input type="checkbox" name="tags[]" value="Life"><label> Life </label>
-                    <br>
-                        <input type="checkbox" name="tags[]" value="Movie"><label> Movie </label>
-                        <input type="checkbox" name="tags[]" value="Music"><label> Music </label>
-                        <input type="checkbox" name="tags[]" value="Mystery"><label> Mystery </label>
-                        <input type="checkbox" name="tags[]" value="Photography"><label> Photography </label>
-                        <input type="checkbox" name="tags[]" value="Pop"><label> Pop </label>
-                    <br>
-                        <input type="checkbox" name="tags[]" value="Rock"><label> Rock </label>
-                        <input type="checkbox" name="tags[]" value="Sci-Fi"><label> Sci-Fi </label>
-                        <input type="checkbox" name="tags[]" value="Show"><label> Show </label>
-                        <input type="checkbox" name="tags[]" value="Technology"><label> Technology </label>
-                        <input type="checkbox" name="tags[]" value="Travel"><label> Travel </label>
+                        <input type="checkbox" name="tags[]" value="Art"> <label> Art </label>
+                        <input type="checkbox" name="tags[]" value="Books"> <label> Books </label>
+                        <input type="checkbox" name="tags[]" value="Comedy"> <label> Comedy </label>
+                        <input type="checkbox" name="tags[]" value="Culture"> <label> Culture </label>
+                        <input type="checkbox" name="tags[]" value="Dance"> <label> Dance </label>
+
+                        <input type="checkbox" name="tags[]" value="Drama"> <label> Drama </label>
+                        <input type="checkbox" name="tags[]" value="Education"> <label> Education </label>
+                        <br>
+                        <input type="checkbox" name="tags[]" value="Entertainment"> <label> Entertainment </label>
+                        <input type="checkbox" name="tags[]" value="Fashion"> <label> Fashion </label>
+
+                        <input type="checkbox" name="tags[]" value="Fitness"> <label> Fitness </label>
+                        <input type="checkbox" name="tags[]" value="Food"> <label> Food </label>
+                        <input type="checkbox" name="tags[]" value="Games"> <label> Games </label>
+                        <br>
+                        <input type="checkbox" name="tags[]" value="Hiphop"> <label> Hiphop </label>
+                        <input type="checkbox" name="tags[]" value="Jazz"> <label> Jazz </label>
+                        <input type="checkbox" name="tags[]" value="Life"> <label> Life </label>
+
+                        <input type="checkbox" name="tags[]" value="Movie"> <label> Movie </label>
+                        <input type="checkbox" name="tags[]" value="Music"> <label> Music </label>
+                        <input type="checkbox" name="tags[]" value="Mystery"> <label> Mystery </label>
+                        <input type="checkbox" name="tags[]" value="Photography"> <label> Photography </label>
+                        <br>
+                        <input type="checkbox" name="tags[]" value="Pop"> <label> Pop </label>
+
+                        <input type="checkbox" name="tags[]" value="Rock"> <label> Rock </label>
+                        <input type="checkbox" name="tags[]" value="Sci-Fi"> <label> Sci-Fi </label>
+                        <input type="checkbox" name="tags[]" value="Show"> <label> Show </label>
+                        <input type="checkbox" name="tags[]" value="Technology"> <label> Technology </label>
+                        <input type="checkbox" name="tags[]" value="Travel"> <label> Travel </label>
                     </div>
 
-                    <br/><br/>
+
+
+                    <br/><hr><br/>
 
 
                     <div class = "row">
                         <label class="control-label"><h3>And....upload some samples </h3></label>
                         <br/><br/>
 
-                        <input type="file" name="sample" id="sampleupload">
-                        <!--<input type="hidden" name="samplepath">-->
+
+                        <input id="sampleupload" type="file" style="display:none" name="sample">
+                        <div class="input-append">
+                            <input id="photoCover" class="input-large" type="text" style="height:30px; border: 2px solid;
+            color: black;" >
+                            <a class="btn" onclick="$('input[id=sampleupload]').click();">Browse</a>
+                        </div>
+
+
+
+
+
 
                         <br/>
-                            <textarea placeholder="Description" name="sampledscrp" style="color: black"></textarea>
+                            <textarea class="tarea" placeholder="Description" name="sampledscrp"></textarea>
                     </div>
                     <br/>
 
@@ -273,6 +302,15 @@ $query0->close();
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/bootstrap.min.js"></script>
+
+
+<script type="text/javascript">
+    $('input[id=sampleupload]').change(function() {
+        $('#photoCover').val($(this).val());
+    });
+</script>
+
+
 </body>
 </html>
 

@@ -27,7 +27,7 @@ $projname = $_GET["projectname"];
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Start a project</title>
+    <title>Update Project</title>
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,700" rel="stylesheet" type="text/css">
@@ -82,6 +82,13 @@ $projname = $_GET["projectname"];
 
             margin-left: auto;
             margin-right:auto;
+        }
+
+        .tarea{
+            color: black;
+            border:3px double green;
+            width:300px;
+            overflow-y:visible
         }
 
     </style>
@@ -144,32 +151,67 @@ $projname = $_GET["projectname"];
 
 
 
-    <div class="row">
-        <h1 >How is your project going?</h1>
+    <div class="row" style="color: lavenderblush;font-family: Chalkduster">
+        <h1>How is your project going?</h1>
         <br>
     </div>
 
     <div class="container blockmargin">
-        <div class="col-md-6 col-md-offset-3 text-center">
+        <div class="col-md-12 text-center">
+                <br><br>
+
+            <div class = "row">
+                <form method="post" action="">
+
+                <button name="cplt" type="submit" class="btn btn-success" >I have completed it!</button>
+
+
+                <?php
+
+                if (isset($_POST['cplt'])) {
+
+                    $cpltquery = $conn->prepare("UPDATE Projects SET Status='Completed' WHERE ProjID='$projectid' ");
+                    $cpltquery -> execute();
+                    $cpltquery ->close();
+
+
+
+                    echo "<script>alert('Congratulations!')</script>";
+
+                    echo "<script>location.href='project.php?projectname=$projname'</script>";
+
+                }
+
+                ?>
+                </form>
+            </div>
+            <br>
+            <hr>
+
 
             <form method="post" action="" enctype="multipart/form-data">
                 <div class="form-group form-margin">
 
                     <div class = "row">
 
-                        <label class="control-label"><h3>Make some updates<br/>for your sponsors :)</h3></label>
+                        <label class="control-label"><h3>Make some updates for your sponsors :)</h3></label>
                         <br/><br/>
 
-                        <input type="file" name="update" id="updateupload">
+
+                        <input id="updateupload" type="file" style="display:none" name="update">
+                        <div class="input-append">
+                            <input id="photoCover" class="input-large" type="text" style="height:30px; border: 2px solid;color: black;">
+                            <a class="btn" onclick="$('input[id=updateupload]').click();">Browse</a>
+                        </div>
 
                         <br/>
 
-                        <textarea placeholder="Description" name="updatedscrp" style="color: black"></textarea>
+                        <textarea class="tarea" placeholder="Description" name="updatedscrp" style="color: black"></textarea>
 
                     </div>
                     <br/>
 
-                    <button name="upt" type="submit" class="btn btn-success" >Update it</button>
+                    <button name="upt" type="submit" class="btn btn-success" >Update</button>
                 </div>
             </form>
 
@@ -226,6 +268,16 @@ $projname = $_GET["projectname"];
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/bootstrap.min.js"></script>
+
+
+
+    <script type="text/javascript">
+        $('input[id=updateupload]').change(function() {
+            $('#photoCover').val($(this).val());
+        });
+    </script>
+
+
 </body>
 </html>
 
