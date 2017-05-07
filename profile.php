@@ -278,6 +278,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                          </table>
                          </div>";
 
+                    if(!$pprojid){
+
+                        echo "<h3><span style='text-align: center; color: #49bf9d; margin-left: 120px;'> Haven't requested any funding.</span></h3>";
+                    }
+
                         $query2->close();
 
 
@@ -309,6 +314,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                              </thead>
                                 <tbody>";
 
+
+
+
                         while($query3 -> fetch()){
 
                             echo "<tr>
@@ -320,6 +328,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                          </tbody>
                          </table>
                          </div>";
+
+
+                        if(!$pprojid){
+
+                            echo "<h3><span style='text-align: center; color: #49bf9d; margin-left: 120px;'> Haven't backed any projects.</span></h3>";
+                        }
 
                         $query3->close();
 
