@@ -108,7 +108,7 @@
         }
     	.profileform{
     		position: relative;
-    		margin-top: 50px;
+    		margin-top: 100px;
     		margin-left: auto;
     		margin-right: auto;
     		width: 1100px;
@@ -320,8 +320,8 @@
  		</div>
 
  		<hr>
- 		<div class="row">
-    		<input type="submit" class="btn btn-success btn-margin btn-lg" name="commit" value="Save">
+ 		<div class="row" style="text-align: center;">
+    		<input type="submit" class="btn btn-success btn-lg" name="commit" value="Save">
     		<a class="btn" href="profile.php?userid=<?php echo $loginuser;?>">View profile</a>
  		</div>
     	</form>
