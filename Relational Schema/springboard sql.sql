@@ -159,6 +159,7 @@ create table `Comments` (
   `ProjID` int unsigned not null,
   `ProjName` varchar(45) not null,
   `HappenTime` datetime not null,
+  `ActiContent` varchar(3000) null,
   `ActiType` varchar(45) not null,
   PRIMARY KEY (`AID`),
   FOREIGN KEY (`UID`) REFERENCES `UserProfiles`(`UID`), 
@@ -192,7 +193,7 @@ drop trigger if exists `AddPostToActi`$$
 create trigger `AddPostToActi` after insert on `Projects`
 for each row
 begin
-	insert into `Activities` (`UID`, `ProjID`, `ProjName`, `HappenTime`, `ActiType`) values (NEW.OwnerID, NEW.ProjID, NEW.ProjName, NEW.PostTime, 'post');
+	insert into `Activities` (`UID`, `ProjID`, `ProjName`, `HappenTime`, `ActiContent`, `ActiType`) values (NEW.OwnerID, NEW.ProjID, NEW.ProjName, NEW.PostTime, NEW.Description, 'post');
 end$$
 
 drop trigger if exists `AddStatusToActiAndAddCharges`$$
@@ -203,9 +204,9 @@ begin
 		if NEW.Status = 'OnGoing' then
 			insert into `Charges` (`ProjID`, `UID`, `Amount`, `CreditCardNumber`) 
 				select ProjID, UID, Amount, CreditCardNumber from `Pledges` where Pledges.ProjID = NEW.ProjID;
-			insert into `Activities` (`UID`, `ProjID`, `ProjName`, `HappenTime`, `ActiType`) values (NEW.OwnerID, NEW.ProjID, NEW.ProjName, NEW.StartTime, 'ongoing');
+			insert into `Activities` (`UID`, `ProjID`, `ProjName`, `HappenTime`, `ActiContent`, `ActiType`) values (NEW.OwnerID, NEW.ProjID, NEW.ProjName, NEW.StartTime, NEW.Description, 'ongoing');
         else if NEW.Status = 'Completed' then 
-			insert into `Activities` (`UID`, `ProjID`, `ProjName`, `HappenTime`, `ActiType`) values (NEW.OwnerID, NEW.ProjID, NEW.ProjName, NEW.CompleteTime, 'complete');
+			insert into `Activities` (`UID`, `ProjID`, `ProjName`, `HappenTime`, `ActiContent`, `ActiType`) values (NEW.OwnerID, NEW.ProjID, NEW.ProjName, NEW.CompleteTime, NEW.Description, 'complete');
         end if;
         end if;
 	end if;
@@ -218,7 +219,7 @@ for each row
 begin
 	declare pname varchar(45);
     select `ProjName` into pname from `Projects` where Projects.ProjID = NEW.ProjID;
-	insert into `Activities` (`UID`, `ProjID`, `ProjName`, `HappenTime`, `ActiType`) values (NEW.UID, NEW.ProjID, pname, NEW.CommentTime, 'comment');
+	insert into `Activities` (`UID`, `ProjID`, `ProjName`, `HappenTime`, `ActiContent`, `ActiType`) values (NEW.UID, NEW.ProjID, pname, NEW.CommentTime, NEW.UserComment, 'comment');
 end$$
 
 drop trigger if exists `AddReviewToActiAndChangeRate`$$
@@ -229,7 +230,7 @@ begin
     declare newrate decimal(2,1);
     select `ProjName` into pname from `Projects` where Projects.ProjID = NEW.ProjID;
     select avg(Rating) into newrate from `Reviews` where Reviews.ProjID = NEW.ProjID;
-	insert into `Activities` (`UID`, `ProjID`, `ProjName`, `HappenTime`, `ActiType`) values (NEW.UID, NEW.ProjID, pname, NEW.RateTime, 'review');
+	insert into `Activities` (`UID`, `ProjID`, `ProjName`, `HappenTime`, `ActiContent`, `ActiType`) values (NEW.UID, NEW.ProjID, pname, NEW.RateTime, NEW.UserReview, 'review');
     update `Projects` set Projects.AvgRating = newrate;
 end$$
 
@@ -270,12 +271,11 @@ create event `DailyCheckFundEndTime`
 on schedule every 1 day
 do 
 	begin
-		update `Projects` set Projects.Status = 'Failed'
+		update `Projects` set Status = 'Failed'
         where Projects.Status = 'Funding' and Projects.FundingEndtime <= now() and Projects.AlreadyFund < Projects.MinFundValue;
-		update `Projects` set Projects.Status = 'OnGoing', Projects.StartTime = now()
+		update `Projects` set Projects.Status = 'Working'
         where Projects.Status = 'Funding' and Projects.FundingEndtime <= now() and Projects.AlreadyFund >= Projects.MinFundValue;
 end$$
-
 
 delimiter ;
 
@@ -338,7 +338,7 @@ select * from `Charges`;
 
 ##Test trigger AddCommentToActi -- success
 select * from `Comments`;
-insert into `Comments`(`UID`, `ProjID`, `UserComment`, `CommentTime`) values ('BarryZhao', '86103', 'very nice', '2017-04-06 13:00:00');
+insert into `Comments`(`UID`, `ProjID`, `UserComment`, `CommentTime`) values ('RyanYu', '86103', 'very nice', '2017-04-06 13:00:00');
 select * from `Comments`;
 select * from `Activities`;
 delete from `Comments` where ProjID = '86103';
@@ -358,7 +358,7 @@ delete from `Reviews` where UID = 'BarryZhao';
 ##Test trigger AddPledgeToActiAndCheckMeetMax -- success
 
 select * from `Pledges`;
-insert into `Pledges` (`ProjID`, `UID`, `PledgeTime`, `Amount`, `CreditCardNumber`) values ('86103', 'RyanYu', '2017-03-02 15:00:00', '3000', '110');
+insert into `Pledges` (`ProjID`, `UID`, `PledgeTime`, `Amount`, `CreditCardNumber`) values ('86103', 'RyanYu', '2017-03-02 15:00:00', '6000', '110');
 insert into `Pledges` (`ProjID`, `UID`, `PledgeTime`, `Amount`, `CreditCardNumber`) values ('86103', 'BarryZhao', '2017-03-03 15:00:00', '6000', '120');
 select * from `Pledges`;
 select * from `Activities`;
@@ -367,7 +367,7 @@ select * from `Projects`;
 ##Test trigger AddUpdateToActi -- success
 insert into `Materials` (`MName`, `MDescription`, `UID`, `MPath`, `UploadTime`) values ('testm', null, 'RyanYu', 'www', '2017-04-01 14:00:00');
 select * from `Materials`;
-insert into `StageUpdate` (`UID`, `ProjID`, `MID`, `UpdateTime`) values ('RyanYu', '86103', '1', '2017-04-01 14:10:00');
+insert into `StageUpdate` (`UID`, `ProjID`, `MID`, `UpdateTime`) values ('RyanYu', '86103', '123001', '2017-04-01 14:10:00');
 select * from `StageUpdate`;
 select * from `Activities`;
 
@@ -379,7 +379,7 @@ delimiter $$
 
 drop event if exists `DailyCheckFundEndTime`$$
 create event `DailyCheckFundEndTime` 
-on schedule every 1 minute
+on schedule every 1 day
 do 
 	begin
 		update `Projects` set Projects.Status = 'Failed'
@@ -390,10 +390,19 @@ end$$
 
 delimiter ;
 
+update `Projects` set Projects.Status = 'Failed'
+        where Projects.Status = 'Funding' and Projects.FundingEndtime <= now() and Projects.AlreadyFund < Projects.MinFundValue;
+		update `Projects` set Projects.Status = 'Working'
+        where Projects.Status = 'Funding' and Projects.FundingEndtime <= now() and Projects.AlreadyFund >= Projects.MinFundValue;
+
+update `Projects` set Projects.Status = 'F'
+        where Projects.Status = 'Funding' and Projects.FundingEndtime <= now() and Projects.AlreadyFund <= Projects.MinFundValue;
+update `Projects` set Projects.Status = 'Working'
+        where Projects.Status = 'Funding' and Projects.FundingEndtime <= now() and Projects.AlreadyFund > Projects.MinFundValue;
         
-INSERT INTO Projects (ProjID, ProjName, Description, OwnerID, MinFundValue, MaxFundValue, PostTime, 
+INSERT INTO Projects (ProjName, Description, OwnerID, MinFundValue, MaxFundValue, PostTime, 
 					FundingEndtime, StartTime, TargetTime, CompleteTime, LikeCount, SponsorCount, AlreadyFund, AvgRating)
-Values ('86103', 'Ma Ma Land', 'I am self-distributing this serial movie of multi-award winning film La La Land. 
+Values ('Ma Ma Land', 'I am self-distributing this serial movie of multi-award winning film La La Land. 
 		The story happens in Manhattan thus it is called Ma Ma Land. The money I raise here will go towards prints, trailers, 
 		and movie advertising so that we can spread the word on screenings.', 'RyanYu', '8000', '12000', 
 		'2017-02-14 14:00:00', '2017-05-04 18:00:00', null, '2017-07-07 00:00:00', null, '11', '5','0', null);
@@ -403,6 +412,8 @@ delete from `Pledges` where ProjID = '86103';
 delete from `Activities` where ProjID = '86103';
 delete from `Projects` where ProjID = '86103';
 
+delete from `Comments`where ProjID = '86103';
+
 insert into `Pledges` (`ProjID`, `UID`, `PledgeTime`, `Amount`, `CreditCardNumber`) values ('86103', 'RyanYu', '2017-03-02 15:00:00', '6000', '110');
 insert into `Pledges` (`ProjID`, `UID`, `PledgeTime`, `Amount`, `CreditCardNumber`) values ('86103', 'BarryZhao', '2017-03-03 15:00:00', '3000', '120');
 select * from `Pledges`;
@@ -410,9 +421,11 @@ select * from `Activities`;
 select * from `Projects`;
 select * from `Charges`;
 
-
+delete from `Likes` where ProjID = '86103';
+delete from `StageUpdate` where ProjID = '86103';
 
 show events;
+
 
 
 
