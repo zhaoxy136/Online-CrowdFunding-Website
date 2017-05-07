@@ -30,13 +30,15 @@ $projname = $_GET["projectname"];
     <title>Start a project</title>
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,700" rel="stylesheet" type="text/css">
     <style type="text/css">
         body{
             background: url("images/darkblue.jpg") no-repeat center center scroll;
             background-size: cover;
         }
-
+        .navbar-brand {
+            font-size: 1.8em;
+        }
         .completerequest{
             position: relative;
             margin-top: 200px;
@@ -97,14 +99,14 @@ $projname = $_GET["projectname"];
                     <span class="icon-bar"></span>
 
                 </button>
-                <a class="navbar-brand" href="homepage.php">Spring Board</a>
+                <a class="navbar-brand" href="homepage.php">SpringBoard</a>
 
             </div>
 
             <div class="collapse navbar-collapse">
 
                 <ul class ="nav navbar-nav">
-                    <li><a href="homepage.php">Home</a></li>
+                    <li class="active"><a href="homepage.php">Home</a></li>
                     <li><a href="explore.php">Explore</a></li>
                     <li><a href ="fundrequest.php">Start a project</a></li>
                 </ul>

@@ -37,9 +37,7 @@ setcookie("keyword",$_GET["searchkeyword"],time()+60*60*24*30);
     <link href="css/stylish-portfolio.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,700" rel="stylesheet" type="text/css">
 
     <style>
 
@@ -59,6 +57,14 @@ setcookie("keyword",$_GET["searchkeyword"],time()+60*60*24*30);
             margin-top: 100px;
             font-size: 300%;
         }
+        .user_icon{
+          margin: 0 5px;
+          width: 20px;
+          height: 20px;
+          display: inline;
+          padding: 0;
+          border: 1px solid rgba(0,0,0,0);
+      }
 
     </style>
 

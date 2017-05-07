@@ -19,11 +19,17 @@
     <title>Personal Settings</title>
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/stylish-portfolio.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,700" rel="stylesheet" type="text/css">
 
     <style type="text/css">
         body {
             background: url("images/pinkbackground.png") no-repeat center center scroll;
             background-size: cover;
+        }
+        .navbar-brand{
+            font-size: 1.8em;
         }
     	.profileform{
     		position: relative;
@@ -45,19 +51,11 @@
     	.btn-margin{
     		margin-left: 100px;
     	}
-    	.avatar{
-    		overflow: hidden;
-    		width: 100px;
-    		height: 100px;
-    	}
-    	.ava-block{
-    		width: 110px;
-    		height: 110px;
-    	}
-    	.avatar::after {
-    		content: "";
-
-    	}
+        .show {
+            margin-top: 3px;
+            width: 100px;
+            height: 100px;
+        }
         .user_icon{
           margin: 0 5px;
           width: 20px;
@@ -81,7 +79,7 @@
                 <span class="icon-bar"></span>
 
             </button>
-            <a class="navbar-brand" href="homepage.php">SpringBorad</a>
+            <a class="navbar-brand" href="homepage.php">SpringBoard</a>
 
         	</div>
 
@@ -220,7 +218,7 @@
     			<label for="profileInputAvatar">Profile Photo</label><span class="error form-margin"><strong style="color: red;"><?php echo $avatarErr;?></strong></span>
     			<input type="file" name="avatar" id="profileInputAvatar">
                 <input type="hidden" name="avalink" value="<?php echo $user['avatar'];?>">
-                <img src="<?php echo $user['avatar']; ?>" onerror="this.src='images/defaulticon.jpg';" class="avatar">
+                <img class="show" src="<?php echo $user['avatar']; ?>" onerror="this.src='images/defaulticon.jpg';" class="avatar">
 			</div>
 
     		<div class="form-group form-margin" style="clear: left;">

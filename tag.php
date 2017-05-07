@@ -27,7 +27,6 @@ setcookie("clctag",$_GET["clicktag"],time()+60*60*24*30);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-
     <title>Tag Results</title>
 
     <!-- Bootstrap -->
@@ -37,12 +36,10 @@ setcookie("clctag",$_GET["clicktag"],time()+60*60*24*30);
     <link href="css/stylish-portfolio.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,700" rel="stylesheet" type="text/css">
 
 
     <style>
-
         .title{
             color: #FFFFFF;
         }
@@ -59,6 +56,14 @@ setcookie("clctag",$_GET["clicktag"],time()+60*60*24*30);
             margin-top: 100px;
             font-size: 300%;
         }
+        .user_icon{
+          margin: 0 5px;
+          width: 20px;
+          height: 20px;
+          display: inline;
+          padding: 0;
+          border: 1px solid rgba(0,0,0,0);
+      }
 
     </style>
 

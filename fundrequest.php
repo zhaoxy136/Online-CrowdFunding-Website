@@ -74,9 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <title>Start a project</title>
 
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
 
     <link rel="stylesheet" type="text/css" href="css/normalize.css"/>
     <link rel="stylesheet" type="text/css" href="css/demo.css"/>
@@ -85,8 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" type="text/css" href="css/cs-skin-boxes.css"/>
 
     <script src="js/modernizr.custom.js"></script>
-
-
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,700" rel="stylesheet" type="text/css">
     <style>
         .navbar-brand {
             font-size: 1.8em;

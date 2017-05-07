@@ -15,12 +15,17 @@ if (isset($_SESSION['loginuser'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Signup Page</title>
+    
+    <link href="css/signupstyle.css" rel='stylesheet' type='text/css'>
+    <!-- Custom Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,700" rel="stylesheet" type="text/css">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/signupstyle.css" rel='stylesheet' type='text/css'>
-
     <style type="text/css">
-    	.error{
+    	.navbar-brand{
+        font-size: 1.8em;
+      }
+      .error{
     		color: red;
     	}
 

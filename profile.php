@@ -42,13 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <title>Profile Page</title>
 
-        <!-- Bootstrap -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        
         <style>
 
             .title{
@@ -113,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="collapse navbar-collapse">
 
             <ul class ="nav navbar-nav">
-                <li><a href="homepage.php">Home</a></li>
+                <li class="active"><a href="homepage.php">Home</a></li>
                 <li><a href="explore.php">Explore</a></li>
                 <li><a href ="fundrequest.php">Start a project</a></li>
             </ul>
@@ -123,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $query0 = $conn->prepare("SELECT Avatar FROM UserProfiles WHERE UID = ?");
                     $query0->bind_param("s", $loginuser);
                     $query0->execute();
-                    $query0->bind_result($icon);
+                    $query0->bind_result($loginicon);
                     $query0->fetch();
                     $query0->close();
                 ?>
@@ -131,8 +130,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               <ul class="navbar-text navbar-right dropdown">
                   <!-- User icon -->
                   <?php 
-                      if ($icon != null){
-                          echo '<img src="' . $icon . '" class = "thumbnail user_icon" >';
+                      if ($loginicon != null){
+                          echo '<img src="' . $loginicon . '" class = "thumbnail user_icon" >';
                       }
                   ?>
                   <!-- Drop Down -->

@@ -47,7 +47,7 @@
                 <span class="icon-bar"></span>
 
             </button>
-            <a class="navbar-brand" href="homepage.php">SpringBorad</a>
+            <a class="navbar-brand" href="homepage.php">SpringBoard</a>
 
         </div>
 
@@ -55,7 +55,7 @@
 
             <ul class ="nav navbar-nav">
                 <li><a href="homepage.php">Home</a></li>
-                <li><a href="explore.php">Explore</a></li>
+                <li class="active"><a href="explore.php">Explore</a></li>
                 <li><a href ="fundrequest.php">Start a project</a></li>
             </ul>
             <?php
@@ -89,7 +89,7 @@
 
   <header class="site-header">
     <div class="wrapper">
-      <h1 class="site-header__title">See What's Happening</h1>
+      <h1 class="site-header__title" style="margin-top: 100px;">See What's Happening</h1>
     </div>
   </header>
 
@@ -157,6 +157,7 @@
                 echo $detail;
                 $subquery1->close();
               } */
+              echo $detail;
             ?>
             "haha hahha post lol lol lol lol hei hei hei
           </div>

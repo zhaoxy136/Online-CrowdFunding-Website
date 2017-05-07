@@ -41,7 +41,9 @@ $query0->close();
             background: url("images/darkblue.jpg") no-repeat center center scroll;
             background-size: cover;
         }
-
+        .navbar-brand {
+            font-size: 1.8em;
+        }
         .completerequest{
             position: relative;
             margin-top: 200px;
@@ -107,7 +109,7 @@ $query0->close();
             <ul class ="nav navbar-nav">
                 <li><a href="homepage.php">Home</a></li>
                 <li><a href="explore.php">Explore</a></li>
-                <li><a href ="fundrequest.php">Start a project</a></li>
+                <li class="active"><a href ="fundrequest.php">Start a project</a></li>
             </ul>
 
             <?php
