@@ -2,7 +2,7 @@
     require 'connection.php';
     require 'function.php';
     session_start();
-    $username = $_SESSION['user'];
+    $loginuser = $_SESSION['loginuser'];
 
 ?>
 
@@ -32,12 +32,6 @@
             font-size: 1.8em;
         }
 
-
-        #topRow h1 {
-            font-size: 300%;
-
-        }
-
         .center{
             text-align: center;
         }
@@ -55,12 +49,6 @@
             margin-bottom: 30px;
         }
 
-        .tagcontainer{
-            height: 350px;
-            width: 1200px;
-            background:url("images/hometagbackground.jpg") center;
-            color: white;
-        }
         .user_icon{
           margin: 0 5px;
           width: 20px;
@@ -85,29 +73,29 @@
                 <span class="icon-bar"></span>
 
             </button>
-            <a class="navbar-brand" href="HomePage.php">SpringBorad</a>
+            <a class="navbar-brand" href="homepage.php">SpringBoard</a>
 
         </div>
 
         <div class="collapse navbar-collapse">
 
             <ul class ="nav navbar-nav">
-                <li class="active"><a href="HomePage.php">Home</a></li>
+                <li class="active"><a href="homepage.php">Home</a></li>
                 <li><a href="explore.php">Explore</a></li>
                 <li><a href ="fundrequest.php">Start a project</a></li>
             </ul>
 
             <?php 
-              if (isset($username)) {
+              if (isset($loginuser)) {
                   $query0 = $conn->prepare("SELECT Avatar FROM UserProfiles WHERE UID = ?");
-                  $query0->bind_param("s", $username);
+                  $query0->bind_param("s", $loginuser);
                   $query0->execute();
                   $query0->bind_result($icon);
                   $query0->fetch();
                   $query0->close();
                 ?>
 
-              <ul class="navbar-text navbar-right">
+              <ul class="navbar-text navbar-right dropdown">
                   <!-- User icon -->
                   <?php 
                       if ($icon != null){
@@ -115,9 +103,10 @@
                       }
                   ?>
                   <!-- Drop Down -->
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <?php echo $username ?> <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <?php echo $loginuser ?> <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                      <li><a href="profile.php?userid=<?php echo $username; ?>">My Profile</a></li>
+                      <li><a href="timeline.php">My Timeline</a></li>
+                      <li><a href="profile.php?userid=<?php echo $loginuser; ?>">My Profile</a></li>
                       <li><a href="editProfile.php">Settings</a></li>
                       <li><a href="logout.php">Log Out</a></li>
                   </ul>
@@ -217,6 +206,193 @@
         </div>
     </aside>
 
+    <!-- Portfolio -->
+    <section id="portfolio" class="portfolio">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1 text-center">
+                <h2>Trending Projects</h2>
+                <p class="lead center">Explore the fantastic ideas with the most sponsorships.</p>
+
+
+                <hr class="small">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="portfolio-item">
+                            <a href="">
+                                <img class="img-portfolio img-responsive" src="images/portfolio-1.jpg">
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="portfolio-item">
+                            <a href="">
+                                <img class="img-portfolio img-responsive" src="images/portfolio-2.jpg">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row marginBottom">
+
+
+                    <?php
+                    $i=0;
+                    $j=0;
+                    ?>
+
+                    <div class="col-md-4 marginTop">
+
+
+
+
+                        <h2><span class="glyphicon glyphicon-music"></span>
+                            <?php
+                            $pnameforp = "";
+
+                            $res = TrendingProjName($conn,$i);
+                            while($row = mysqli_fetch_array($res)) {
+                                echo $row['ProjName'];
+                                $pnameforp = $row['ProjName'];
+                                $i++;
+                            }
+                            ?></h2>
+
+                        <?php
+
+                        $res = TrendingProjDescription($conn,$j);
+                        while($row = mysqli_fetch_array($res)) {
+                            echo $row['Description'];
+                            $j++;
+                        }
+                        ?>
+                        <br/><br/>
+
+
+                        <?php
+
+                        echo "<a href='project.php?projectname=$pnameforp'><button class='btn btn-success marginTop'>Check it out!</button></a>";
+
+                        ?>
+
+                    </div>
+
+                    <div class="col-md-4 marginTop">
+
+                        <h2><span class="glyphicon glyphicon-star"></span>
+                            <?php
+
+                            $pnameforp = "";
+
+                            $res = TrendingProjName($conn,$i);
+                            while($row = mysqli_fetch_array($res)) {
+                                echo $row['ProjName'];
+                                $pnameforp = $row['ProjName'];
+                                $i++;
+                            }
+                            ?></h2>
+
+                        <?php
+
+                        $res = TrendingProjDescription($conn,$j);
+                        while($row = mysqli_fetch_array($res)) {
+                            echo $row['Description'];
+                            $j++;
+                        }
+                        ?>
+                        <br/><br/>
+
+                        <?php
+
+                        echo "<a href='project.php?projectname=$pnameforp'><button class='btn btn-success marginTop'>Check it out!</button></a>";
+
+                        ?>
+
+                    </div>
+
+                    <div class="col-md-4 marginTop">
+
+
+                        <h2><span class="glyphicon glyphicon-heart"></span>
+                            <?php
+
+                            $pnameforp = "";
+
+                            $res = TrendingProjName($conn,$i);
+                            while($row = mysqli_fetch_array($res)) {
+                                echo $row['ProjName'];
+                                $pnameforp = $row['ProjName'];
+                                $i++;
+                            }
+
+
+                            ?></h2>
+
+                        <?php
+
+                        $res = TrendingProjDescription($conn,$j);
+                        while($row = mysqli_fetch_array($res)) {
+                            echo $row['Description'];
+                            $j++;
+                        }
+                        ?>
+                        <br/><br/>
+
+
+                        <?php
+                        /*<button class="btn btn-success marginTop"><a  href="project.php?projectname=$pnameforp">Check it out!</a></button>
+                            <button  onclick="window.location.href='project.php?projectname=$pnameforp'"
+                                         class="btn btn-success marginTop">Check it out!</button>
+                            */
+                            echo "<a href='project.php?projectname=$pnameforp'><button class='btn btn-success marginTop'>Check it out!</button></a>";
+
+
+
+                            ?>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="portfolio-item">
+                                <a href="">
+                                    <img class="img-portfolio img-responsive" src="images/portfolio-3.jpg">
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="portfolio-item">
+                                <a href="">
+                                    <img class="img-portfolio img-responsive" src="images/portfolio-4.jpg">
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.row (nested) -->
+                    <a href="explore.php" class="btn btn-dark">View More Projects</a>
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <hr>
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -235,13 +411,12 @@
     </footer>
 
 
-
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.js"></script>
-    
+
     <script>
 
       $(".contentContainer").css("min-height",$(window).height());

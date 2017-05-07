@@ -1,4 +1,3 @@
-
 <?php 
     require 'connection.php';
     require 'function.php';
@@ -17,9 +16,9 @@
             echo "<script>alert('Your Username or password is incorrect!')</script>";
         } else {
             //login success
-            $_SESSION['user'] = $_POST['loginname'];
+            $_SESSION['loginuser'] = $_POST['loginname'];
         }
-        echo "<script>location.href='HomePage.php'</script>";
+        echo "<script>location.href='homepage.php'</script>";
     }
 ?>
 

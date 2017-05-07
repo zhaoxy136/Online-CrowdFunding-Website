@@ -1,7 +1,11 @@
 <?php
-session_start();
 include 'connection.php';
 include 'function.php';
+session_start();
+if (isset($_SESSION['loginuser'])) {
+  session_destroy();
+  echo "<script>location.href='signup.php'</script>";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,20 +40,20 @@ include 'function.php';
                 <span class="icon-bar"></span>
 
             </button>
-            <a class="navbar-brand" href="HomePage.php">SpringBoard</a>
+            <a class="navbar-brand" href="homepage.php">SpringBoard</a>
 
         </div>
 
         <div class="collapse navbar-collapse">
 
             <ul class ="nav navbar-nav">
-                <li class="active"><a href="HomePage.php">Home</a></li>
+                <li class="active"><a href="homepage.php">Home</a></li>
                 <li><a href="explore.php">Explore</a></li>
                 <li><a href ="fundrequest.php">Start a project</a></li>
             </ul>
 
-		</div>
-        </div>
+		    </div>
+      </div>
     </div>
 
     <?php
@@ -111,45 +115,45 @@ include 'function.php';
    						Gender, City, State, Cellphone, EmailAddress, CreditCardNumber, Interests) VALUES ('$signName', null, null, null, null, null, null, null, null, null)");
    					$insertUserProf->execute();
    					//redirect to homepage as logged in.
-   					$_SESSION['user'] = $signName;
-   					echo "<script>location.href='HomePage.php'</script>";
+   					$_SESSION['loginuser'] = $signName;
+   					echo "<script>location.href='homepage.php'</script>";
   				}
   			}
 
     	}
 
     ?>
+    
       <div class="main">
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 
             <div class="lable">
-                Username:<br/>
+            Username:<br/>
                 <input type="text" name="signName" value="<?php echo $signName; ?>">
                 <span class="error"><br/><?php echo $signNameErr;?></span><br/>
             </div>
-                <div class="clear"> </div>
 
             <div class="lable-2">
+
             Password:<br/>
-            <input type="password" name="passCode"><span class="error"><br/><?php echo $passCodeErr;?></span>
-            <br/>
-                <div class="clear"></div>
+                <input type="password" name="passCode">
+                <span class="error"><br/><?php echo $passCodeErr;?></span><br/>
 
             Confirm Your Password:<br/>
-            <input type="password" name="confirmCode">
+                <input type="password" name="confirmCode">
             </div>
-                <div class="clear"></div>
+                
 
             <h2 style="color: red;">By creating an account, you agree to our Terms & Conditions</h2>
             <div class="submit">
                 <input type="submit" name="signup" value="Sign Up">
             </div>
             <div class="clear"> </div>
-          </form>
+        </form>
     </div><!--end-main-->
 
     <div class="copy-right">
-        <p><a href="HomePage.php"> Back To Homepage </a></p>
+        <p><a href="homepage.php"> Back To Homepage </a></p>
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
