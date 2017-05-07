@@ -105,14 +105,15 @@
     <div class="wrapper">
     <?php
     while ($query0->fetch()) {
-    //while ($i < 8) {
-      //$detail = "xixi";
       ?>
       <div class="timeline__item timeline__item--<?php echo $i;?>">
         <div class="timeline__item__station"></div>
         <div class="timeline__item__content">
           <h2 class="timeline__item__content__date"><?php echo date("M.d H:i", strtotime($happen));?></h2>
-          <p class="timeline__item__content__description"><strong><em><?php echo $id;?></em></strong>
+
+          <p class="timeline__item__content__description">
+            <strong><em><a href="profile.php?userid=<?php echo $id;?>">
+              <?php echo $id;?></a></em></strong>
           <?php if ($type == "post") { ?>
           posted a new project: 
           <?php } elseif ($type == "like") { ?>
@@ -130,7 +131,8 @@
           <?php } elseif ($type == "pledge") { ?>
           pledged on the project:
           <?php } ?>
-          <strong><em><?php echo $proj;?></em></strong></p>
+          <strong><em><a href="project.php?projectname=<?php echo $proj;?>">
+              <?php echo $proj;?></a></em></strong></p>
           <div class="timeline__item__content__detail">
             <?php
               if ($type == "post" || $type == "comment" || $type == "review" || $type == "ongoing" || $type == "complete") {
