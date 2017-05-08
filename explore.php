@@ -130,7 +130,7 @@ $loginuser = $_SESSION['loginuser'];
             <?php
                 } else {
             ?>
-                <form class="navbar-form navbar-right" method="POST" action="loginCheck.php">
+                <form class="navbar-form navbar-right" method="POST" action="<?php echo htmlspecialchars('loginCheck.php');?>">
 
                 <div class="form-group">
 
@@ -161,7 +161,7 @@ $loginuser = $_SESSION['loginuser'];
             <div class="col-md-6 col-md-offset-3">
 
                 <!-- Search Form -->
-                <form role="form" action="search.php" method="GET">
+                <form role="form" action="<?php echo htmlspecialchars('search.php');?>" method="GET">
 
                     <!-- Search Field -->
                     <div class="row">
@@ -297,7 +297,21 @@ $loginuser = $_SESSION['loginuser'];
         </div>
     </div>
 </aside>
-
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1 text-center">
+                <h4><strong>Powered by</strong>
+                </h4>
+                <p><a href="https://www.linkedin.com/in/renqingyu/" style="color: black;">Renqing Yu</a></p>
+                <p><a href="https://www.linkedin.com/in/xiangyu-zhao/" style="color: black;">Xiangyu Zhao</a></p>
+                    
+                <hr class="small">
+                <p class="text-muted">Copyright &copy; SpringBoard</a ></p >
+            </div>
+        </div>
+    </div>
+</footer>
 
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

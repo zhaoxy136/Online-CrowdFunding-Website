@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <?php
                 } else {
             ?>
-                <form class="navbar-form navbar-right" method="POST" action="loginCheck.php">
+                <form class="navbar-form navbar-right" method="POST" action="<?php echo htmlspecialchars('loginCheck.php');?>">
 
                 <div class="form-group">
 

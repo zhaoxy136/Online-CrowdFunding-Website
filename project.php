@@ -23,7 +23,6 @@ require 'function.php';
     $getproj->bind_result($pid);
     $getproj->fetch();
     $getproj->close();
-
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['like'])) {
             $subquery11 = $conn->prepare("INSERT INTO Likes (UID, ProjID) VALUES ('$loginuser', '$pid')");
@@ -267,7 +266,7 @@ require 'function.php';
             <?php
                 } else {
             ?>
-                <form class="navbar-form navbar-right" method="POST" action="loginCheck.php">
+                <form class="navbar-form navbar-right" method="POST" action="<?php echo htmlspecialchars('loginCheck.php');?>">
 
                 <div class="form-group">
 
@@ -723,7 +722,6 @@ require 'function.php';
                             $query5 -> execute();
                             $query5 -> bind_result($rateby, $rateproj, $ratingstar, $ratetime, $reviewcontent);
 
-
                             while ($query5->fetch()){
 
                                 echo "<h3>$rateby</h3>
@@ -745,59 +743,39 @@ require 'function.php';
                             $query5 -> close();
 
 
-                            $query50 = $conn->prepare("SELECT Rating FROM Reviews WHERE ProjID='$projid' AND UID = '$loginuser' ");
-                            $query50 -> execute();
-                            $query50 -> bind_result($xixi);
-                            $query50 ->fetch();
-                            $query50 ->close();
-
-
-
 
                             if($status == 'Completed'){
 
-                                $query55 = $conn->prepare("SELECT UID 
-                                                                FROM Pledges 
-                                                                WHERE ProjID='$projid' AND UID = '$loginuser' ");
+                                $query55 = $conn->prepare("SELECT UID FROM Pledges WHERE ProjID='$projid' AND UID = '$loginuser'");
                                 $query55 -> execute();
                                 $query55 -> bind_result($sponsors);
 
 
-                                if ($query55->fetch()) {
+                                if ($query55->fetch()){
 
-                                    ?>
+                                ?>
 
-                                    <br/>
+                                <br/>
 
-                                    <?php
-                                    if (!isset($loginuser)) { ?>
-                                        <p style="color: #226837; font-size: 18px; font-weight: 500;">Please Login First
-                                            to make a review.</p>
+                                <?php 
+                                if (!isset($loginuser)) { ?>
+                                <p style="color: #226837; font-size: 18px; font-weight: 500;">Please Login First to make a review.</p>
+                                <?php
+                                } else {
+                                ?>
+                                <button class ="btn btn-success" data-toggle ="modal" data-target="#reviewModal">
+                                    Rate this project
+                                </button>
 
-                                        <?php
-                                    } else {
-
-                                        if (isset($xixi)) {
-
-                                            echo "You have already reviewed it. <br/>";
-                                        } else {
-                                            ?>
-                                            <button class="btn btn-success" data-toggle="modal"
-                                                    data-target="#reviewModal">
-                                                Rate this project
-                                            </button>
-
-                                            <?php
-
-                                        }
+                                <?php
                                     }
-                                }else {
+                                } else {
                                     echo "Review function only open to sponsors. <br/>";
 
                                 }
-
                                 $query55 -> close();
-                                
+
+
                             }else{
 
                                 echo "Review function only open when the project is completed. <br/>";
@@ -889,6 +867,20 @@ require 'function.php';
 
 </div>
 
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1 text-center">
+                <h4><strong>Powered by</strong>
+                </h4>
+                <p><a href="https://www.linkedin.com/in/renqingyu/" style="color: black;">Renqing Yu</a></p>
+                <p><a href="https://www.linkedin.com/in/xiangyu-zhao/" style="color: black;">Xiangyu Zhao</a></p>
+                <hr class="small">
+                <p class="text-muted">Copyright &copy; SpringBoard</a ></p >
+            </div>
+        </div>
+    </div>
+</footer>
 <script src="http://cdn.bootcss.com/jquery/1.11.0/jquery.min.js" type="text/javascript"></script>
 <script>window.jQuery || document.write('<script src="js/jquery-1.11.0.min.js"><\/script>')</script>
 <script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>

@@ -48,16 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $insertquery -> execute();
     $insertquery ->close();
-    //get project id
-    /*$check1 = $conn->prepare("SELECT ProjID FROM Projects ORDER BY ProjID DESC LIMIT 1");
-    $check1->execute();
-    $check1->bind_result($requestid);
-    if ($check1->fetch()){
-        $check1->close();
-        echo "<script>location.href='tagandsample.php?projectid=$requestid'</script>";
-    }
-    $check1->close();*/
-
    echo "<script>location.href='tagandsample.php?requestname=$requestname'</script>";
 }
 
@@ -74,12 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <title>Start a project</title>
 
-
-    <link rel="stylesheet" type="text/css" href="css/normalize.css"/>
+    <!-- <link rel="stylesheet" type="text/css" href="css/normalize.css"/> -->
     <link rel="stylesheet" type="text/css" href="css/demo.css"/>
     <link rel="stylesheet" type="text/css" href="css/component.css"/>
-    <link rel="stylesheet" type="text/css" href="css/cs-select.css"/>
-    <link rel="stylesheet" type="text/css" href="css/cs-skin-boxes.css"/>
+    <!-- <link rel="stylesheet" type="text/css" href="css/cs-select.css"/> -->
+    <!-- <link rel="stylesheet" type="text/css" href="css/cs-skin-boxes.css"/> -->
 
     <script src="js/modernizr.custom.js"></script>
     <!-- Bootstrap -->
@@ -165,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="fs-title">
         <h1><span style="margin-left: 200px">Post a funding request right now</span></h1>
     </div>
-    <form id="myform" class="fs-form fs-form-full" autocomplete="off" action="fundrequest.php" method="post">
+    <form id="myform" class="fs-form fs-form-full" autocomplete="off" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
         <ol class="fs-fields">
             <li>
                 <label class="fs-field-label fs-anim-upper" for="q1">What's Your Project Name?</label>
@@ -205,7 +194,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 </div><!-- /fs-form-wrap -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1 text-center">
 
+                <h4 class="text-muted">Copyright &copy; SpringBoard</a ></h4>
+            </div>
+        </div>
+    </div>
+</footer>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
