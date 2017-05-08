@@ -113,11 +113,11 @@ if (isset($_SESSION['loginuser'])) {
     				$signNameErr = "This Name has been occupied! Please try another.";
    				} else {
    					//insert into database;
+            $hashed_passcode = password_hash($passCode, PASSWORD_BCRYPT);
    					$insertAcc = $conn->prepare("INSERT INTO Accounts(UID, Passcode) VALUES (?,?)");
-   					$insertAcc->bind_param("ss", $signName, $passCode);
+   					$insertAcc->bind_param("ss", $signName, $hashed_passcode);
    					$insertAcc->execute();
-   					$insertUserProf = $conn->prepare("INSERT INTO UserProfiles(UID, FirstName, LastName, 
-   						Gender, City, State, Cellphone, EmailAddress, CreditCardNumber, Interests) VALUES ('$signName', null, null, null, null, null, null, null, null, null)");
+   					$insertUserProf = $conn->prepare("INSERT INTO UserProfiles(UID) VALUES ('$signName')");
    					$insertUserProf->execute();
    					//redirect to homepage as logged in.
    					$_SESSION['loginuser'] = $signName;
