@@ -211,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $query11 -> bind_result($followingnum);
                     $query11->fetch();
 
-                    echo "Following: $followingnum";
+                    echo "<a data-toggle='modal' data-target='#showfollowing' style='color:#bcb7b4'>Following</a>: $followingnum";
 
 
                     $query11->close();
@@ -227,13 +227,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $query12 -> bind_result($followernum);
                     $query12->fetch();
 
-                    echo "Follower: $followernum";
+                    echo "<a data-toggle='modal' data-target='#showfollower' style='color:#bcb7b4'>Follower</a>: $followernum";
 
                     $query12->close();
 
-
-
                     ?>
+
 
                     <br/>
                 </div>
@@ -289,7 +288,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     ?>
 
 					</section>
+                <!--Following Modal-->
+                    <div class="modal" id="showfollowing">
 
+                        <div class ="modal-dialog modal-sm">
+
+                            <div class ="modal-content">
+
+                                <div class="modal-header">
+
+                                    <button class="close" data-dismiss="modal">x</button>
+                                    <h4 class="modal-title">Following</h4>
+                                </div>
+
+                                <?php
+                                    $query13 = $conn->prepare("SELECT UID FROM Following 
+                                                            WHERE FollowerID = '$uidforp'");
+                                    $query13->execute();
+                                    $query13->bind_result($idols);
+                                    
+                                    echo "<ul style='list-style-type: none;'><br/>";   
+                                    while ($query13->fetch()) {
+                                        echo "<li><a href='profile.php?userid=$idols'>$idols</a></li>";
+                                    }
+                                    echo "</ul>";
+                                    $query13->close();
+                                ?>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                <!--Follower Modal-->
+                    <div class="modal" id="showfollower">
+
+                        <div class ="modal-dialog modal-sm">
+
+                            <div class ="modal-content">
+
+                                <div class="modal-header">
+
+                                    <button class="close" data-dismiss="modal">x</button>
+                                    <h4 class="modal-title">Followers</h4>
+                                </div>
+
+                                <?php
+                                    $query14 = $conn->prepare("SELECT FollowerID FROM Following 
+                                                            WHERE UID = '$uidforp'");
+                                    $query14->execute();
+                                    $query14->bind_result($fans);
+                                    
+                                    echo "<ul style='list-style-type: none;'><br/>";   
+                                    while ($query14->fetch()) {
+                                        echo "<li><a href='profile.php?userid=$fans'>$fans</a></li>";
+                                    }
+                                    echo "</ul>";
+                                    $query14->close();
+                                ?>
+                                
+                            </div>
+                        </div>
+                    </div>
 				<!-- Two -->
 					<section id="two">
 
@@ -336,6 +395,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         }
 
                         $query3->close();
+
+
+                        ?>
+
+                    </section>
+
+                    <!-- Three -->
+                    <section id="three">
+
+                        <?php
+
+                        $query4 = $conn->prepare(
+                            "SELECT ProjName, Status, AlreadyFund
+                                    FROM Projects NATURAL JOIN Likes 
+                                    WHERE UID = '$uidforp'");
+                        $query4 -> execute();
+                        $query4 -> bind_result($projectname,$pstatus,$palreadyfund);
+
+
+                        echo " <header class=\"major\">
+                            <h2>Liked Projects</h2>
+                                </header>
+                                <div class=\"table-wrapper\">
+                                <table class=\"table  table-hover\">
+                                  <thead>
+                                 <tr>
+                               <td> Project Name </td><td> Status </td><td> Current Fund </td></tr>
+                             </thead>
+                                <tbody>";
+
+
+
+
+                        while($query4 -> fetch()){
+
+                            echo "<tr>
+                              <td><a href ='project.php?projectname=$projectname'>$projectname</a></td><td> $pstatus</td><td>$ $palreadyfund </td>";
+                            echo "</tr>\n";
+                        }
+
+                        echo"
+                         </tbody>
+                         </table>
+                         </div>";
+
+
+                        if(!$projectname){
+
+                            echo "<h3><span style='text-align: center; color: #1d5e47; margin-left: 120px;'> Haven't liked any projects.</span></h3>";
+                        }
+
+                        $query4->close();
 
 
                         ?>
