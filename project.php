@@ -561,7 +561,11 @@ require 'function.php';
                                 echo "<h4>$updateid</h4>
                                     <h4>$updatetime</h4>
                                     <h3>$updatedescription</h3><br/>
-                                    <p><a href=\" $updatepath\" class=\"center-block\"><img src=\" $updatepath\" class=\"img-responsive\" /></a></p>";
+                                    <p><a href=\" $updatepath\" class=\"center-block\"><embed src=\" $updatepath\" class=\"img-responsive\" autostart=false /></a></p>";
+
+
+
+
 
                                 echo "<br/>";
 
