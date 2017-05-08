@@ -161,7 +161,7 @@ $projname = $_GET["projectname"];
                 <br><br>
 
             <div class = "row">
-                <form method="post" action="">
+                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 
                 <button name="cplt" type="submit" class="btn btn-success" >I have completed it!</button>
 
@@ -170,11 +170,11 @@ $projname = $_GET["projectname"];
 
                 if (isset($_POST['cplt'])) {
 
-                    $cpltquery = $conn->prepare("UPDATE Projects SET Status='Completed' WHERE ProjID='$projectid' ");
+                    $cplttime = date('Y-m-d H:i:s');
+
+                    $cpltquery = $conn->prepare("UPDATE Projects SET Status='Completed', CompleteTime='$cplttime' WHERE ProjID='$projectid' ");
                     $cpltquery -> execute();
                     $cpltquery ->close();
-
-
 
                     echo "<script>alert('Congratulations!')</script>";
 
@@ -189,7 +189,7 @@ $projname = $_GET["projectname"];
             <hr>
 
 
-            <form method="post" action="" enctype="multipart/form-data">
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
                 <div class="form-group form-margin">
 
                     <div class = "row">
