@@ -124,7 +124,7 @@ setcookie("clctag",$_GET["clicktag"],time()+60*60*24*30);
             <?php
                 } else {
             ?>
-                <form class="navbar-form navbar-right" method="POST" action="<?php echo htmlspecialchars('loginCheck.php');?>">
+                <form class="navbar-form navbar-right" method="POST" action="loginCheck.php">
 
                 <div class="form-group">
 
@@ -154,12 +154,12 @@ setcookie("clctag",$_GET["clicktag"],time()+60*60*24*30);
         <?php
 
         $query1 = $conn->prepare(
-            "SELECT p.ProjID, ProjName, PostTime
+            "SELECT ProjName, PostTime, Status
                     FROM Projects p natural join Label
                     WHERE tag = '$clicktag'
                     Order by PostTime desc");
         $query1 -> execute();
-        $query1 -> bind_result($projid,$projname,$posttime);
+        $query1 -> bind_result($projname,$posttime,$status);
 
 
         ?>
@@ -170,13 +170,13 @@ setcookie("clctag",$_GET["clicktag"],time()+60*60*24*30);
                 <table class="table  table-hover">
                     <thead class="thead">
                     <tr>
-                        <td> Project ID </td><td> Project Name </td><td> Post Time </td></tr>
+                        <td> Project Name </td><td> Post Time </td><td> Status </td></tr>
                     </thead>
                     <tbody>
                     <?php
                     while($query1 -> fetch()){
                         echo "<tr>
-                              <td><a href ='project.php?projectname=$projname'>$projid</a></td><td> $projname </td><td> $posttime </td>";
+                              <td><a href ='project.php?projectname=$projname'>$projname</a></td><td> $posttime </td><td> $status </td>";
                         echo "</tr>\n";
                     }
                     $query1 -> close();
@@ -251,21 +251,24 @@ setcookie("clctag",$_GET["clicktag"],time()+60*60*24*30);
         </div>
     </div>
 </aside>
-
+<!-- Footer -->
 <footer>
     <div class="container">
         <div class="row">
             <div class="col-lg-10 col-lg-offset-1 text-center">
                 <h4><strong>Powered by</strong>
                 </h4>
-                <p><a href="https://www.linkedin.com/in/renqingyu/" style="color: black;">Renqing Yu</a></p>
-                <p><a href="https://www.linkedin.com/in/xiangyu-zhao/" style="color: black;">Xiangyu Zhao</a></p>
+                <p> <span><a href="https://www.linkedin.com/in/renqingyu/" style="color: black;">Renqing Yu</a></span></p>
+                <p> <span><a href="https://www.linkedin.com/in/xiangyu-zhao/" style="color: black;">Xiangyu Zhao</a></span></p>
                 <hr class="small">
-                <p class="text-muted">Copyright &copy; SpringBoard</a ></p >
+                <p class="text-muted">Copyright &copy; SpringBoard</a></p>
             </div>
         </div>
     </div>
 </footer>
+
+
+
 
 
 

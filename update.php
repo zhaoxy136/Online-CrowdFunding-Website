@@ -161,7 +161,7 @@ $projname = $_GET["projectname"];
                 <br><br>
 
             <div class = "row">
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                <form method="post" action="">
 
                 <button name="cplt" type="submit" class="btn btn-success" >I have completed it!</button>
 
@@ -176,6 +176,8 @@ $projname = $_GET["projectname"];
                     $cpltquery -> execute();
                     $cpltquery ->close();
 
+
+
                     echo "<script>alert('Congratulations!')</script>";
 
                     echo "<script>location.href='project.php?projectname=$projname'</script>";
@@ -189,7 +191,7 @@ $projname = $_GET["projectname"];
             <hr>
 
 
-            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
+            <form method="post" action="" enctype="multipart/form-data">
                 <div class="form-group form-margin">
 
                     <div class = "row">

@@ -165,7 +165,7 @@ $query0->close();
         <div class="container blockmargin">
             <div class="col-md-12  text-center">
 
-                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
+                <form method="post" action="" enctype="multipart/form-data">
                 <div class="form-group form-margin">
                     <hr>
 

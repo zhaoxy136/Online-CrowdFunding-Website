@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <?php
                 } else {
             ?>
-                <form class="navbar-form navbar-right" method="POST" action="<?php echo htmlspecialchars('loginCheck.php');?>">
+                <form class="navbar-form navbar-right" method="POST" action="loginCheck.php">
 
                 <div class="form-group">
 
@@ -332,7 +332,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         if(!$pprojid){
 
-                            echo "<h3><span style='text-align: center; color: #49bf9d; margin-left: 120px;'> Haven't backed any projects.</span></h3>";
+                            echo "<h3><span style='text-align: center; color: #1d5e47; margin-left: 120px;'> Haven't backed any projects.</span></h3>";
                         }
 
                         $query3->close();
