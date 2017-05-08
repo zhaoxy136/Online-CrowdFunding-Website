@@ -36,8 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $requestmaxfund = $_POST['q4'];
     $requestfundendtime = $_POST['q5'] ." 12:00:00";
     $requesttargettime = $_POST['q6'] ." 12:00:00";
-
-
+    if ($requestminfund >= $requestmaxfund || $requestfundendtime >= $requesttargettime) {
+        echo "<script>alert('There are some errors in your request!')</script>";
+        echo "<script>location.href='fundrequest.php'</script>";
+    } else {
 
     $requestposttime = date('Y-m-d H:i:s');
 
@@ -58,7 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     $check1->close();*/
 
-   echo "<script>location.href='tagandsample.php?requestname=$requestname'</script>";
+    echo "<script>location.href='tagandsample.php?requestname=$requestname'</script>";
+    }
 }
 
 ?>
