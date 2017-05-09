@@ -433,39 +433,41 @@ require 'function.php';
 
 
     <?php
+    if (isset($loginuser)) {
+        if($status == 'Funding') {
+            $query7 = $conn->prepare("SELECT UID FROM Pledges WHERE ProjID='$projid' AND UID = '$loginuser'");
+            $query7->execute();
+            $query7->bind_result($sponsors);
 
-    if($status == 'Funding') {
-        $query7 = $conn->prepare("SELECT UID FROM Pledges WHERE ProjID='$projid' AND UID = '$loginuser'");
-        $query7->execute();
-        $query7->bind_result($sponsors);
+            if ($query7->fetch()) {
+                echo "<h3><div style='text-align: center; color: #5CB85C'>You have already sponsored this project.</div></h3> <br/><br/>";
 
-        if ($query7->fetch()) {
-            echo "<h3><div style='text-align: center; color: #5CB85C'>You have already sponsored this project.</div></h3> <br/><br/>";
+            } else {
+                ?>
+                <div class="center">
 
-        } else {
-            ?>
-            <div class="center">
+                    <a class="btn btn-success btn-lg" data-toggle="modal" data-target="#pledgeModal" role="button">SPONSOR
+                        IT!</a>
+                    <br/><br/>
 
-                <a class="btn btn-success btn-lg" data-toggle="modal" data-target="#pledgeModal" role="button">SPONSOR
-                    IT!</a>
-                <br/><br/>
+                </div>
+                <?php
+            }
+            $query7->close();
 
-            </div>
-            <?php
+        }else if($status == 'Ongoing'){
+            echo "<h3><div style='text-align: center; color: #5CB85C'>The funding period is over and $ownerid is working on this project :)</div></h3> <br/><br/>";
+
+        }else if($status == 'Completed'){
+            echo "<h3><div style='text-align: center; color: #5CB85C'>Thanks to your supports the project is completed now!</div></h3> <br/><br/>";
+
+        }else if($status == 'Failed'){
+
+            echo "<h3><div style='text-align: center; color: #5CB85C'>$ownerid didn't recieve enough fund...<br>Your comment will be a great comfort :)</div></h3> <br/><br/>";
+
         }
-        $query7->close();
-
-    }else if($status == 'Ongoing'){
-        echo "<h3><div style='text-align: center; color: #5CB85C'>The funding period is over and $ownerid is working on this project :)</div></h3> <br/><br/>";
-
-    }else if($status == 'Completed'){
-        echo "<h3><div style='text-align: center; color: #5CB85C'>Thanks to your supports the project is completed now!</div></h3> <br/><br/>";
-
-    }else if($status == 'Failed'){
-
-        echo "<h3><div style='text-align: center; color: #5CB85C'>$ownerid didn't recieve enough fund...<br>Your comment will be a great comfort :)</div></h3> <br/><br/>";
-
     }
+    
 
     ?>
 
