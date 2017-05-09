@@ -391,7 +391,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         if(!$pprojid){
 
-                            echo "<h3><span style='text-align: center; color: #1d5e47; margin-left: 120px;'> Haven't backed any projects.</span></h3>";
+                            echo "<h3><span style='text-align: center; color: #49bf9d; margin-left: 120px;'> Haven't backed any projects.</span></h3>";
                         }
 
                         $query3->close();
@@ -443,7 +443,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         if(!$projectname){
 
-                            echo "<h3><span style='text-align: center; color: #1d5e47; margin-left: 120px;'> Haven't liked any projects.</span></h3>";
+                            echo "<h3><span style='text-align: center; color: #49bf9d; margin-left: 120px;'> Haven't liked any projects.</span></h3>";
                         }
 
                         $query4->close();
