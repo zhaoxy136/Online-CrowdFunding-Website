@@ -116,6 +116,7 @@ require 'function.php';
             outline: none;
             text-decoration: none;
         }
+
         .tab .nav-tabs{
             border: 1px solid #b7ddb5;
         }
@@ -434,6 +435,11 @@ require 'function.php';
 
     <?php
     if (isset($loginuser)) {
+        $isqualify = $conn->prepare("SELECT FirstName, LastName, Cellphone, EmailAddress, CreditCardNumber FROM UserProfiles WHERE UID = '$loginuser'");
+        $isqualify->execute();
+        $isqualify->bind_result($valifirstname, $valilastname, $valiphone, $valiemail, $validcard);
+        $isqualify->fetch();
+        $isqualify->close();
         if($status == 'Funding') {
             $query7 = $conn->prepare("SELECT UID FROM Pledges WHERE ProjID='$projid' AND UID = '$loginuser'");
             $query7->execute();
@@ -484,7 +490,13 @@ require 'function.php';
                     <h4 class="modal-title">Make a Pledge</h4>
 
                 </div>
+                <?php
 
+                if ($valifirstname == "" || $valilastname == "" || $valiphone == "" || $valiemail == "" || $validcard == "") {
+                    echo "<br/><p class='modal-title' style='text-align:center;'> Please Complete Your Profile First.</p><br/>";
+                ?>
+                    <button type="button" class="btn btn-light center-block" onclick="window.location.href='editProfile.php'">edit profile</button><br/>
+                <?php } else { ?>
 
                 <form name="sponsorform" role ="form" class="form-inline" method="post">
                 <div class ="modal-body">
@@ -506,8 +518,9 @@ require 'function.php';
                     <button type="submit" class="btn btn-success">Sponsor</button>
                 </div>
                 </form>
-                <?php
 
+                <?php
+                }
                 if($_POST['pledgeamount']){
                     $newpledgeuid = $loginuser;
                     $newpledgeprojid = $projid;
@@ -631,8 +644,7 @@ require 'function.php';
                             $query4 -> bind_result($commentby, $commentproj, $commentcontent, $commenttime);
 
                             while ($query4->fetch()){
-
-                                echo "<h3>$commentby</h3>
+                                echo "<h3><a href='profile.php?userid=$commentby' style='color:#bcb7b4;'>$commentby</a></h3>
                                     <h5>$commenttime</h5>
                                     <p>$commentcontent</p><br/>";
                                 echo "<br/>";
@@ -732,7 +744,7 @@ require 'function.php';
 
                             while ($query5->fetch()){
 
-                                echo "<h3>$rateby</h3>
+                                echo "<h3><a href='profile.php?userid=$rateby' style='color:#bcb7b4'>$rateby</a></h3>
                                             <h5>$ratetime</h5>";
 
                                 for ($i=0; $i<$ratingstar; $i++) {
