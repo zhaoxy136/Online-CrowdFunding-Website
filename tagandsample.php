@@ -264,7 +264,7 @@ $query0->close();
                         $samplename = basename($_FILES['sample']['name']);
 
                         $sampletime = date('Y-m-d H:i:s');
-                        $sampledscrp = $_POST['sampledscrp'];
+                        $sampledscrp = test_input($_POST['sampledscrp']);
 
 
                         $materialquery = $conn->prepare("INSERT INTO Materials(MName, UID, MPath, UploadTime, MDescription) VALUES ('$samplename','$loginuser','$samplepath','$sampletime','$sampledscrp')");

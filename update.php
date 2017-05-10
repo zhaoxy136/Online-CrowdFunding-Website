@@ -230,7 +230,7 @@ $projname = $_GET["projectname"];
                 $updatename = basename($_FILES['update']['name']);
 
                 $updatetime = date('Y-m-d H:i:s');
-                $updatedscrp = $_POST['updatedscrp'];
+                $updatedscrp = test_input($_POST['updatedscrp']);
 
 
 

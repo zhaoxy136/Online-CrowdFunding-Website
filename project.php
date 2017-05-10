@@ -711,7 +711,7 @@ require 'function.php';
                                 if($_POST['commentcontent']){
                                     $newcommentuid = $loginuser;
                                     $newcommentprojid = $projid;
-                                    $newusercomment = $_POST['commentcontent'];
+                                    $newusercomment = test_input($_POST['commentcontent']);
                                     $newcommenttime = date('Y-m-d H:i:s');
 
                                     $commentquery = $conn-> prepare("INSERT INTO Comments (UID, ProjID, UserComment, CommentTime) VALUES ('$newcommentuid', '$newcommentprojid', '$newusercomment', '$newcommenttime')");
@@ -876,7 +876,7 @@ require 'function.php';
                                                 $newrateprojid = $projid;
                                                 $newratestar = $_POST['ratestar'];
                                                 $newreviewtime = date('Y-m-d H:i:s');
-                                                $newreviewcontent = $_POST['reviewcontent'];
+                                                $newreviewcontent = test_input($_POST['reviewcontent']);
 
 
                                                 $ratequery = $conn-> prepare("INSERT INTO Reviews (UID, ProjID, Rating, RateTime, UserReview) VALUES ('$newrateuid','$newrateprojid','$newratestar','$newreviewtime', '$newreviewcontent')");
