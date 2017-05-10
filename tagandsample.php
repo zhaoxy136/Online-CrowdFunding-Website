@@ -216,10 +216,9 @@ $query0->close();
                         <br/><br/>
 
 
-                        <input id="sampleupload" type="file" style="display:none" name="sample">
+                        <input id="sampleupload" type="file" style="display:none" name="sample" required>
                         <div class="input-append">
-                            <input id="photoCover" class="input-large" type="text" style="height:30px; border: 2px solid;
-            color: black;" >
+                            <input id="photoCover" class="input-large" type="text" style="height:30px; border: 2px solid; color: black;" >
                             <a class="btn" onclick="$('input[id=sampleupload]').click();">Browse</a>
                         </div>
 

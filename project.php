@@ -619,7 +619,7 @@ require 'function.php';
                             while ($query3->fetch()){
                                 echo "<h4>$sampleid</h4>
                                     <h3>$sampledescription</h3><br/>
-                                    <p><a href=\" $samplepath\" class=\"center-block\"><img src=\" $samplepath\" class=\"img-responsive\" /></a></p>";
+                                    <p><a href=\" $samplepath\" class=\"center-block\"><embed src=\" $samplepath\" class=\"img-responsive\" /></a></p>";
                                 echo "<br/>";
 
                             }

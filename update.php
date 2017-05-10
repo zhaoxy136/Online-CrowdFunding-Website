@@ -200,7 +200,7 @@ $projname = $_GET["projectname"];
                         <br/><br/>
 
 
-                        <input id="updateupload" type="file" style="display:none" name="update">
+                        <input id="updateupload" type="file" style="display:none" name="update" required>
                         <div class="input-append">
                             <input id="photoCover" class="input-large" type="text" style="height:30px; border: 2px solid;color: black;">
                             <a class="btn" onclick="$('input[id=updateupload]').click();">Browse</a>
